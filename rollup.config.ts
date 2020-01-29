@@ -7,7 +7,7 @@ import json from 'rollup-plugin-json'
 
 const pkg = require('./package.json')
 
-const libraryName = 'data-model'
+const libraryName = 'action-object'
 
 export default {
   input: `src/${libraryName}.ts`,
