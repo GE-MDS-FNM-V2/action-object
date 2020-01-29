@@ -1,6 +1,9 @@
-export const example = () => 'hello world'
-export default {
-  create: () => {
-    console.log('hello this is the action object')
+export const example = (a: number, b: number) => {
+  if (a > b) {
+    return a
+  } else if (a < b) {
+    return b
+  } else {
+    return a
   }
 }
