@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@ge-fnm/action-object | @ge-fnm/action-object</title>
+	<title>CommunicationMethodV1 | @ge-fnm/action-object</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -879,7 +879,7 @@ img { max-width: 100%; }
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">@ge-fnm/action-object</a></strong>
+					<strong><a href="../index.html">@ge-fnm/action-object</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -910,271 +910,73 @@ img { max-width: 100%; }
 <nav class="tsd-navigation secondary">
 	<ul>
 		<li class=" tsd-kind-enum">
-			<a href="enums/actiontypev1.html" class="tsd-kind-icon">Action<wbr>Type<wbr>V1</a>
+			<a href="actiontypev1.html" class="tsd-kind-icon">Action<wbr>Type<wbr>V1</a>
 		</li>
-		<li class=" tsd-kind-enum">
-			<a href="enums/communicationmethodv1.html" class="tsd-kind-icon">Communication<wbr>Method<wbr>V1</a>
+		<li class="current tsd-kind-enum">
+			<a href="communicationmethodv1.html" class="tsd-kind-icon">Communication<wbr>Method<wbr>V1</a>
+			<ul>
+				<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+					<a href="communicationmethodv1.html#jsonrpc" class="tsd-kind-icon">JSONRPC</a>
+				</li>
+				<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+					<a href="communicationmethodv1.html#serial" class="tsd-kind-icon">SERIAL</a>
+				</li>
+			</ul>
 		</li>
 		<li class=" tsd-kind-class tsd-is-not-exported">
-			<a href="classes/actionobjectv1.html" class="tsd-kind-icon">Action<wbr>Object<wbr>V1</a>
+			<a href="../classes/actionobjectv1.html" class="tsd-kind-icon">Action<wbr>Object<wbr>V1</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
-			<a href="globals.html#actionobjectinformationv1" class="tsd-kind-icon">Action<wbr>Object<wbr>Information<wbr>V1</a>
+			<a href="../globals.html#actionobjectinformationv1" class="tsd-kind-icon">Action<wbr>Object<wbr>Information<wbr>V1</a>
 		</li>
 		<li class=" tsd-kind-function">
-			<a href="globals.html#id" class="tsd-kind-icon">ID</a>
+			<a href="../globals.html#id" class="tsd-kind-icon">ID</a>
 		</li>
 		<li class=" tsd-kind-function">
-			<a href="globals.html#requireproperty" class="tsd-kind-icon">require<wbr>Property</a>
+			<a href="../globals.html#requireproperty" class="tsd-kind-icon">require<wbr>Property</a>
 		</li>
 		<li class=" tsd-kind-object-literal">
-			<a href="globals.html#v1" class="tsd-kind-icon">v1</a>
+			<a href="../globals.html#v1" class="tsd-kind-icon">v1</a>
 		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
-		<div class="tsd-panel tsd-typography">
-			<h1 id="ge-fnm-action-object-ge-fnm-action-object-">GE-FNM Action Object (@ge-fnm/action-object)</h1>
-			<p>This is the Action Object used within the GE FNM.</p>
-			<p><a href="https://coveralls.io/github/GE-MDS-FNM-V2/action-object?branch=master"><img src="https://coveralls.io/repos/github/GE-MDS-FNM-V2/action-object/badge.svg?branch=master" alt="Coverage Status"></a></p>
-			<p>This library is mainly used within the communication-selector-module and the perform-action-module.</p>
-			<h2 id="i-would-like-to-use-the-library-in-my-app">I would like to use the library in my app</h2>
-			<p>To get started with the repository in your project install it like this</p>
-			<h3 id="install-with-yarn">Install with yarn</h3>
-			<pre><code>yarn add <span class="hljs-meta">@ge</span>-fnm/action-<span class="hljs-keyword">object</span></code></pre><h3 id="install-with-npm">Install with npm</h3>
-			<pre><code>npm i <span class="hljs-meta">@ge</span>-fnm/action-<span class="hljs-keyword">object</span></code></pre><h3 id="example-usage">Example Usage</h3>
-			<p>Here is an example of how to use it in a browser</p>
-			<pre><code class="language-js"><span class="hljs-keyword">import</span> { v1, ActionTypeV1, CommunicationMethodV1 } <span class="hljs-keyword">from</span> <span class="hljs-string">'./action-object'</span>
-
-<span class="hljs-keyword">const</span> obj = v1.create({
-    <span class="hljs-attr">actionType</span>: ActionTypeV1.GET,
-    <span class="hljs-attr">commMethod</span>: CommunicationMethodV1.JSONRPC,
-    <span class="hljs-attr">modifyingValue</span>: <span class="hljs-string">'test'</span>,
-    <span class="hljs-attr">path</span>: [<span class="hljs-string">'hello'</span>, <span class="hljs-string">'world'</span>],
-    <span class="hljs-attr">response</span>: <span class="hljs-literal">undefined</span>,
-    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:5000'</span>
-})
-
-<span class="hljs-keyword">const</span> serialized = obj.serialize()
-<span class="hljs-keyword">const</span> objAgain = v1.deserialize(serialized)
-<span class="hljs-comment">// objAgain now has all the same properties as obj except with an added 'id' property</span>
-
-<span class="hljs-comment">// If you would like to initialize an ActionObject with a specific ID, you can do this:</span>
-<span class="hljs-comment">// NOTE - unless for testing purposes you really shouldn't be doing this</span>
-<span class="hljs-keyword">const</span> obj = v1.create({
-    <span class="hljs-attr">actionType</span>: ActionTypeV1.GET,
-    <span class="hljs-attr">commMethod</span>: CommunicationMethodV1.JSONRPC,
-    <span class="hljs-attr">modifyingValue</span>: <span class="hljs-string">'test'</span>,
-    <span class="hljs-attr">path</span>: [<span class="hljs-string">'hello'</span>, <span class="hljs-string">'world'</span>],
-    <span class="hljs-attr">response</span>: <span class="hljs-literal">undefined</span>,
-    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:5000'</span>
-}, <span class="hljs-string">"ThisIsAnOptionalID"</span>)</code></pre>
-			<h2 id="i-want-to-work-on-this-project">I want to work on this project</h2>
-			<p>Please see <a href="CONTRIBUTING.md">CONTRIBUTING.md</a></p>
-		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
-						<h3>Enumerations</h3>
+						<h3>Enumeration members</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-enum"><a href="enums/actiontypev1.html" class="tsd-kind-icon">Action<wbr>Type<wbr>V1</a></li>
-							<li class="tsd-kind-enum"><a href="enums/communicationmethodv1.html" class="tsd-kind-icon">Communication<wbr>Method<wbr>V1</a></li>
-						</ul>
-					</section>
-					<section class="tsd-index-section tsd-is-not-exported">
-						<h3>Classes</h3>
-						<ul class="tsd-index-list">
-							<li class="tsd-kind-class tsd-is-not-exported"><a href="classes/actionobjectv1.html" class="tsd-kind-icon">Action<wbr>Object<wbr>V1</a></li>
-						</ul>
-					</section>
-					<section class="tsd-index-section ">
-						<h3>Type aliases</h3>
-						<ul class="tsd-index-list">
-							<li class="tsd-kind-type-alias"><a href="globals.html#actionobjectinformationv1" class="tsd-kind-icon">Action<wbr>Object<wbr>Information<wbr>V1</a></li>
-						</ul>
-					</section>
-					<section class="tsd-index-section ">
-						<h3>Functions</h3>
-						<ul class="tsd-index-list">
-							<li class="tsd-kind-function"><a href="globals.html#id" class="tsd-kind-icon">ID</a></li>
-							<li class="tsd-kind-function"><a href="globals.html#requireproperty" class="tsd-kind-icon">require<wbr>Property</a></li>
-						</ul>
-					</section>
-					<section class="tsd-index-section ">
-						<h3>Object literals</h3>
-						<ul class="tsd-index-list">
-							<li class="tsd-kind-object-literal"><a href="globals.html#v1" class="tsd-kind-icon">v1</a></li>
+							<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="communicationmethodv1.html#jsonrpc" class="tsd-kind-icon">JSONRPC</a></li>
+							<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="communicationmethodv1.html#serial" class="tsd-kind-icon">SERIAL</a></li>
 						</ul>
 					</section>
 				</div>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
-			<h2>Type aliases</h2>
-			<section class="tsd-panel tsd-member tsd-kind-type-alias">
-				<a name="actionobjectinformationv1" class="tsd-anchor"></a>
-				<h3>Action<wbr>Object<wbr>Information<wbr>V1</h3>
-				<div class="tsd-signature tsd-kind-icon">Action<wbr>Object<wbr>Information<wbr>V1<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+			<h2>Enumeration members</h2>
+			<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+				<a name="jsonrpc" class="tsd-anchor"></a>
+				<h3>JSONRPC</h3>
+				<div class="tsd-signature tsd-kind-icon">JSONRPC<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;JSONRPC&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L14">action-object.ts:14</a></li>
+						<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L10">action-object.ts:10</a></li>
 					</ul>
 				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter">
-							<h5>action<wbr>Type<span class="tsd-signature-symbol">: </span><a href="enums/actiontypev1.html" class="tsd-signature-type">ActionTypeV1</a></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5>comm<wbr>Method<span class="tsd-signature-symbol">: </span><a href="enums/communicationmethodv1.html" class="tsd-signature-type">CommunicationMethodV1</a></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5>modifying<wbr>Value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5>response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5>uri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-						</li>
-					</ul>
-				</div>
 			</section>
-		</section>
-		<section class="tsd-panel-group tsd-member-group ">
-			<h2>Functions</h2>
-			<section class="tsd-panel tsd-member tsd-kind-function">
-				<a name="id" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagConst">Const</span> ID</h3>
-				<ul class="tsd-signatures tsd-kind-function">
-					<li class="tsd-signature tsd-kind-icon">ID<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/utils.ts#L16">utils.ts:16</a></li>
-							</ul>
-						</aside>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-function">
-				<a name="requireproperty" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagConst">Const</span> require<wbr>Property</h3>
-				<ul class="tsd-signatures tsd-kind-function">
-					<li class="tsd-signature tsd-kind-icon">require<wbr>Property<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, prop<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, validator<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/utils.ts#L1">utils.ts:1</a></li>
-							</ul>
-						</aside>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>obj: <span class="tsd-signature-type">any</span></h5>
-							</li>
-							<li>
-								<h5>prop: <span class="tsd-signature-type">string</span></h5>
-							</li>
-							<li>
-								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> validator: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;() &#x3D;&gt; true</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter-siganture">
-										<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-											<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-										</ul>
-										<ul class="tsd-descriptions">
-											<li class="tsd-description">
-												<h4 class="tsd-parameters-title">Parameters</h4>
-												<ul class="tsd-parameters">
-													<li>
-														<h5>val: <span class="tsd-signature-type">any</span></h5>
-													</li>
-												</ul>
-												<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-					</li>
-				</ul>
-			</section>
-		</section>
-		<section class="tsd-panel-group tsd-member-group ">
-			<h2>Object literals</h2>
-			<section class="tsd-panel tsd-member tsd-kind-object-literal">
-				<a name="v1" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagConst">Const</span> v1</h3>
-				<div class="tsd-signature tsd-kind-icon">v1<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+			<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+				<a name="serial" class="tsd-anchor"></a>
+				<h3>SERIAL</h3>
+				<div class="tsd-signature tsd-kind-icon">SERIAL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;SERIAL&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L40">action-object.ts:40</a></li>
+						<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L11">action-object.ts:11</a></li>
 					</ul>
 				</aside>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal">
-					<a name="v1.create" class="tsd-anchor"></a>
-					<h3>create</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal">
-						<li class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">(</span>information<span class="tsd-signature-symbol">: </span><a href="globals.html#actionobjectinformationv1" class="tsd-signature-type">ActionObjectInformationV1</a>, optionalID<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes/actionobjectv1.html" class="tsd-signature-type">ActionObjectV1</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L41">action-object.ts:41</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>information: <a href="globals.html#actionobjectinformationv1" class="tsd-signature-type">ActionObjectInformationV1</a></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionalID: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="classes/actionobjectv1.html" class="tsd-signature-type">ActionObjectV1</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal">
-					<a name="v1.deserialize" class="tsd-anchor"></a>
-					<h3>deserialize</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal">
-						<li class="tsd-signature tsd-kind-icon">deserialize<span class="tsd-signature-symbol">(</span>rawString<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes/actionobjectv1.html" class="tsd-signature-type">ActionObjectV1</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L44">action-object.ts:44</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>rawString: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="classes/actionobjectv1.html" class="tsd-signature-type">ActionObjectV1</a></h4>
-						</li>
-					</ul>
-				</section>
 			</section>
 		</section>
 		<footer class="with-border-bottom">
