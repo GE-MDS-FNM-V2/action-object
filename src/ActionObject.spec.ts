@@ -1,11 +1,20 @@
-import { v1, ActionTypeV1, CommunicationMethodV1 } from './action-object'
+import {
+  v1,
+  ActionTypeV1,
+  CommunicationMethodV1,
+  CommunicationDataV1,
+  ProtocolV1
+} from './action-object'
 import { ID } from './utils'
 
 describe('v1', () => {
   it('Can create ActionObject with valid params', () => {
     v1.create({
       actionType: ActionTypeV1.GET,
-      commMethod: CommunicationMethodV1.JSONRPC,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP
+      },
+      protocol: ProtocolV1.JSONRPC,
       modifyingValue: 'test',
       path: ['hello', 'world'],
       response: undefined,
@@ -17,7 +26,10 @@ describe('v1', () => {
     const obj = v1.create(
       {
         actionType: ActionTypeV1.GET,
-        commMethod: CommunicationMethodV1.JSONRPC,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP
+        },
+        protocol: ProtocolV1.JSONRPC,
         modifyingValue: 'test',
         path: ['hello', 'world'],
         response: undefined,
@@ -28,7 +40,10 @@ describe('v1', () => {
     expect(obj.serialize()).toEqual(
       JSON.stringify({
         actionType: 'GET',
-        commMethod: 'JSONRPC',
+        commData: {
+          commMethod: 'HTTP'
+        },
+        protocol: 'JSONRPC',
         modifyingValue: 'test',
         path: ['hello', 'world'],
         response: undefined,
@@ -42,7 +57,10 @@ describe('v1', () => {
     const obj = v1.create(
       {
         actionType: ActionTypeV1.GET,
-        commMethod: CommunicationMethodV1.JSONRPC,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP
+        },
+        protocol: ProtocolV1.JSONRPC,
         modifyingValue: 'test',
         path: ['hello', 'world'],
         response: undefined,
@@ -57,7 +75,10 @@ describe('v1', () => {
     const id = ID()
     const obj = JSON.stringify({
       actionType: ActionTypeV1.GET,
-      commMethod: CommunicationMethodV1.JSONRPC,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP
+      },
+      protocol: ProtocolV1.JSONRPC,
       modifyingValue: 'test',
       path: {},
       response: undefined,
@@ -75,7 +96,10 @@ describe('v1', () => {
     const id = ID()
     const obj = JSON.stringify({
       actionType: ActionTypeV1.GET,
-      commMethod: CommunicationMethodV1.JSONRPC,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP
+      },
+      protocol: ProtocolV1.JSONRPC,
       modifyingValue: 'test',
       path: ['hello', {}],
       response: undefined,

@@ -4,7 +4,7 @@ export enum ActionTypeV1 {
   GET = 'GET',
   SET = 'SET',
   ACTION = 'ACTION',
-  CLIENT = 'CLIENT'
+  INIT = 'INIT'
 }
 
 export enum CommunicationMethodV1 {
@@ -19,13 +19,14 @@ export enum ProtocolV1 {
 
 export type CommunicationDataV1 = {
   commMethod: CommunicationMethodV1
-  username?:string
-  password?:string
+  username?: string
+  password?: string
 }
 
 export type ActionObjectInformationV1 = {
   uri: string
   actionType: ActionTypeV1
+  protocol: ProtocolV1
   path: string[]
   modifyingValue: any
   commData: CommunicationDataV1
@@ -73,7 +74,9 @@ export const v1 = {
       return true
     }) as string[]
     const modifyingValue = requireProperty(rawJson, 'modifyingValue')
-    const commMethod = requireProperty(rawJson, 'commMethod', value => {
+    const protocol = requireProperty(rawJson, 'protocol')
+    const commData = requireProperty(rawJson, 'commData')
+    const commMethod = requireProperty(commData, 'commMethod', value => {
       return Object.keys(CommunicationMethodV1).includes(value)
     }) as CommunicationMethodV1
     const response = rawJson['response']
@@ -85,7 +88,8 @@ export const v1 = {
         actionType,
         path,
         modifyingValue,
-        commMethod,
+        commData,
+        protocol,
         response
       },
       id
