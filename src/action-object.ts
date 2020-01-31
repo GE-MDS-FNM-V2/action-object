@@ -3,12 +3,24 @@ import { requireProperty, ID } from './utils'
 export enum ActionTypeV1 {
   GET = 'GET',
   SET = 'SET',
-  ACTION = 'ACTION'
+  ACTION = 'ACTION',
+  CLIENT = 'CLIENT'
 }
 
 export enum CommunicationMethodV1 {
-  JSONRPC = 'JSONRPC',
+  HTTP = 'HTTP',
   SERIAL = 'SERIAL'
+}
+
+export enum ProtocolV1 {
+  JSONRPC = 'JSONRPC',
+  CLI = 'CLI'
+}
+
+export type CommunicationDataV1 = {
+  commMethod: CommunicationMethodV1
+  username?:string
+  password?:string
 }
 
 export type ActionObjectInformationV1 = {
@@ -16,7 +28,7 @@ export type ActionObjectInformationV1 = {
   actionType: ActionTypeV1
   path: string[]
   modifyingValue: any
-  commMethod: CommunicationMethodV1
+  commData: CommunicationDataV1
   response: undefined | string
 }
 
