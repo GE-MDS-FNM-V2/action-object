@@ -915,11 +915,17 @@ img { max-width: 100%; }
 		<li class=" tsd-kind-enum">
 			<a href="enums/communicationmethodv1.html" class="tsd-kind-icon">Communication<wbr>Method<wbr>V1</a>
 		</li>
+		<li class=" tsd-kind-enum">
+			<a href="enums/protocolv1.html" class="tsd-kind-icon">Protocol<wbr>V1</a>
+		</li>
 		<li class=" tsd-kind-class tsd-is-not-exported">
 			<a href="classes/actionobjectv1.html" class="tsd-kind-icon">Action<wbr>Object<wbr>V1</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="globals.html#actionobjectinformationv1" class="tsd-kind-icon">Action<wbr>Object<wbr>Information<wbr>V1</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="globals.html#communicationdatav1" class="tsd-kind-icon">Communication<wbr>Data<wbr>V1</a>
 		</li>
 		<li class=" tsd-kind-function">
 			<a href="globals.html#id" class="tsd-kind-icon">ID</a>
@@ -983,6 +989,7 @@ img { max-width: 100%; }
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-enum"><a href="enums/actiontypev1.html" class="tsd-kind-icon">Action<wbr>Type<wbr>V1</a></li>
 							<li class="tsd-kind-enum"><a href="enums/communicationmethodv1.html" class="tsd-kind-icon">Communication<wbr>Method<wbr>V1</a></li>
+							<li class="tsd-kind-enum"><a href="enums/protocolv1.html" class="tsd-kind-icon">Protocol<wbr>V1</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section tsd-is-not-exported">
@@ -995,6 +1002,7 @@ img { max-width: 100%; }
 						<h3>Type aliases</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-type-alias"><a href="globals.html#actionobjectinformationv1" class="tsd-kind-icon">Action<wbr>Object<wbr>Information<wbr>V1</a></li>
+							<li class="tsd-kind-type-alias"><a href="globals.html#communicationdatav1" class="tsd-kind-icon">Communication<wbr>Data<wbr>V1</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -1021,7 +1029,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Action<wbr>Object<wbr>Information<wbr>V1<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L14">action-object.ts:14</a></li>
+						<li>Defined in <a href="https://github.com/MattThyng/action-object/blob/3971079/src/action-object.ts#L26">action-object.ts:26</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -1031,7 +1039,7 @@ img { max-width: 100%; }
 							<h5>action<wbr>Type<span class="tsd-signature-symbol">: </span><a href="enums/actiontypev1.html" class="tsd-signature-type">ActionTypeV1</a></h5>
 						</li>
 						<li class="tsd-parameter">
-							<h5>comm<wbr>Method<span class="tsd-signature-symbol">: </span><a href="enums/communicationmethodv1.html" class="tsd-signature-type">CommunicationMethodV1</a></h5>
+							<h5>comm<wbr>Data<span class="tsd-signature-symbol">: </span><a href="globals.html#communicationdatav1" class="tsd-signature-type">CommunicationDataV1</a></h5>
 						</li>
 						<li class="tsd-parameter">
 							<h5>modifying<wbr>Value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
@@ -1040,10 +1048,37 @@ img { max-width: 100%; }
 							<h5>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 						</li>
 						<li class="tsd-parameter">
+							<h5>protocol<span class="tsd-signature-symbol">: </span><a href="enums/protocolv1.html" class="tsd-signature-type">ProtocolV1</a></h5>
+						</li>
+						<li class="tsd-parameter">
 							<h5>response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 						</li>
 						<li class="tsd-parameter">
 							<h5>uri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias">
+				<a name="communicationdatav1" class="tsd-anchor"></a>
+				<h3>Communication<wbr>Data<wbr>V1</h3>
+				<div class="tsd-signature tsd-kind-icon">Communication<wbr>Data<wbr>V1<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/MattThyng/action-object/blob/3971079/src/action-object.ts#L20">action-object.ts:20</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter">
+							<h5>comm<wbr>Method<span class="tsd-signature-symbol">: </span><a href="enums/communicationmethodv1.html" class="tsd-signature-type">CommunicationMethodV1</a></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5><span class="tsd-flag ts-flagOptional">Optional</span> password<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5><span class="tsd-flag ts-flagOptional">Optional</span> username<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 						</li>
 					</ul>
 				</div>
@@ -1061,7 +1096,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/utils.ts#L16">utils.ts:16</a></li>
+								<li>Defined in <a href="https://github.com/MattThyng/action-object/blob/3971079/src/utils.ts#L16">utils.ts:16</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1078,7 +1113,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/utils.ts#L1">utils.ts:1</a></li>
+								<li>Defined in <a href="https://github.com/MattThyng/action-object/blob/3971079/src/utils.ts#L1">utils.ts:1</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1124,7 +1159,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">v1<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L40">action-object.ts:40</a></li>
+						<li>Defined in <a href="https://github.com/MattThyng/action-object/blob/3971079/src/action-object.ts#L53">action-object.ts:53</a></li>
 					</ul>
 				</aside>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal">
@@ -1137,7 +1172,7 @@ img { max-width: 100%; }
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L41">action-object.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/MattThyng/action-object/blob/3971079/src/action-object.ts#L54">action-object.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1163,7 +1198,7 @@ img { max-width: 100%; }
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/GE-MDS-FNM-V2/action-object/blob/bb44a45/src/action-object.ts#L44">action-object.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/MattThyng/action-object/blob/3971079/src/action-object.ts#L57">action-object.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
