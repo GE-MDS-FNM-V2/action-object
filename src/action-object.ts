@@ -19,6 +19,7 @@ export enum ProtocolV1 {
 
 export type CommunicationDataV1 = {
   commMethod: CommunicationMethodV1
+  protocol: ProtocolV1
   username?: string
   password?: string
 }
@@ -26,7 +27,6 @@ export type CommunicationDataV1 = {
 export type ActionObjectInformationV1 = {
   uri: string
   actionType: ActionTypeV1
-  protocol: ProtocolV1
   path: string[]
   modifyingValue: any
   commData: CommunicationDataV1
@@ -56,10 +56,13 @@ export const v1 = {
   },
   deserialize(rawString: string) {
     const rawJson = JSON.parse(rawString)
+
     const uri = requireProperty(rawJson, 'uri')
+
     const actionType = requireProperty(rawJson, 'actionType', value => {
       return Object.keys(ActionTypeV1).includes(value)
     }) as ActionTypeV1
+
     const path = requireProperty(rawJson, 'path', value => {
       const isArray = Array.isArray(value)
       if (!isArray) {
@@ -73,14 +76,37 @@ export const v1 = {
       }
       return true
     }) as string[]
+
     const modifyingValue = requireProperty(rawJson, 'modifyingValue')
-    const protocol = requireProperty(rawJson, 'protocol')
-    const commData = requireProperty(rawJson, 'commData')
-    const commMethod = requireProperty(commData, 'commMethod', value => {
-      return Object.keys(CommunicationMethodV1).includes(value)
-    }) as CommunicationMethodV1
+
     const response = rawJson['response']
+
     const id = requireProperty(rawJson, 'id')
+
+    // const protocol = requireProperty(rawJson, 'protocol')
+
+    const commData = requireProperty(rawJson, 'commData', unverifiedCommData => {
+      const commMethod = requireProperty(unverifiedCommData, 'commMethod', unverifiedCommMethod => {
+        return Object.keys(CommunicationMethodV1).includes(unverifiedCommMethod)
+      })
+
+      const protocol = requireProperty(unverifiedCommData, 'protocol', unverifiedCommMethod => {
+        return Object.keys(ProtocolV1).includes(unverifiedCommMethod)
+      })
+
+      if (unverifiedCommData.username) {
+        requireProperty(unverifiedCommData, 'username', unverifiedUsername => {
+          return typeof unverifiedUsername === 'string'
+        })
+      }
+
+      if (unverifiedCommData.password) {
+        requireProperty(unverifiedCommData, 'password', unverifiedPassword => {
+          return typeof unverifiedPassword === 'string'
+        })
+      }
+      return true
+    })
 
     return new ActionObjectV1(
       {
@@ -89,7 +115,6 @@ export const v1 = {
         path,
         modifyingValue,
         commData,
-        protocol,
         response
       },
       id
