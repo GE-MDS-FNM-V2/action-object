@@ -12,9 +12,9 @@ describe('v1', () => {
     v1.create({
       actionType: ActionTypeV1.GET,
       commData: {
-        commMethod: CommunicationMethodV1.HTTP
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
       },
-      protocol: ProtocolV1.JSONRPC,
       modifyingValue: 'test',
       path: ['hello', 'world'],
       response: undefined,
@@ -27,9 +27,11 @@ describe('v1', () => {
       {
         actionType: ActionTypeV1.GET,
         commData: {
-          commMethod: CommunicationMethodV1.HTTP
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC,
+          username: 'john',
+          password: 'adams'
         },
-        protocol: ProtocolV1.JSONRPC,
         modifyingValue: 'test',
         path: ['hello', 'world'],
         response: undefined,
@@ -41,9 +43,11 @@ describe('v1', () => {
       JSON.stringify({
         actionType: 'GET',
         commData: {
-          commMethod: 'HTTP'
+          commMethod: 'HTTP',
+          protocol: 'JSONRPC',
+          username: 'john',
+          password: 'adams'
         },
-        protocol: 'JSONRPC',
         modifyingValue: 'test',
         path: ['hello', 'world'],
         response: undefined,
@@ -58,9 +62,11 @@ describe('v1', () => {
       {
         actionType: ActionTypeV1.GET,
         commData: {
-          commMethod: CommunicationMethodV1.HTTP
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC,
+          username: 'john',
+          password: 'adams'
         },
-        protocol: ProtocolV1.JSONRPC,
         modifyingValue: 'test',
         path: ['hello', 'world'],
         response: undefined,
@@ -71,14 +77,35 @@ describe('v1', () => {
     const serialized = obj.serialize()
     expect(v1.deserialize(serialized)).toEqual(obj)
   })
+
+  it('Can serialize/deserialize valid ActionObject without username+password', () => {
+    const id = ID()
+    const obj = v1.create(
+      {
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        response: undefined,
+        uri: 'http://localhost:5000'
+      },
+      id
+    )
+    const serialized = obj.serialize()
+    expect(v1.deserialize(serialized)).toEqual(obj)
+  })
+
   it('Errors if path is not array', () => {
     const id = ID()
     const obj = JSON.stringify({
       actionType: ActionTypeV1.GET,
       commData: {
-        commMethod: CommunicationMethodV1.HTTP
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
       },
-      protocol: ProtocolV1.JSONRPC,
       modifyingValue: 'test',
       path: {},
       response: undefined,
@@ -97,9 +124,9 @@ describe('v1', () => {
     const obj = JSON.stringify({
       actionType: ActionTypeV1.GET,
       commData: {
-        commMethod: CommunicationMethodV1.HTTP
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
       },
-      protocol: ProtocolV1.JSONRPC,
       modifyingValue: 'test',
       path: ['hello', {}],
       response: undefined,
@@ -111,6 +138,112 @@ describe('v1', () => {
       expect(false).toEqual(true)
     } catch (error) {
       expect(error).toEqual(new Error(`Object does not have valid "path" property`))
+    }
+  })
+
+  it('Errors if commData is undefined', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      actionType: ActionTypeV1.GET,
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      response: undefined,
+      uri: 'http://localhost:5000',
+      id: id
+    })
+    try {
+      v1.deserialize(obj)
+      expect(false).toEqual(true)
+    } catch (error) {
+      expect(error).toEqual(new Error(`Object does not have valid "commData" property`))
+    }
+  })
+
+  it('Errors if commData.commMethod is undefined', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      actionType: ActionTypeV1.GET,
+      commData: {
+        protocol: ProtocolV1.JSONRPC
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      response: undefined,
+      uri: 'http://localhost:5000',
+      id: id
+    })
+    try {
+      v1.deserialize(obj)
+      expect(false).toEqual(true)
+    } catch (error) {
+      expect(error).toEqual(new Error(`Object does not have valid "commMethod" property`))
+    }
+  })
+
+  it('Errors if commData.protocol is undefined', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP
+        // protocol: ProtocolV1.JSONRPC,
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      response: undefined,
+      uri: 'http://localhost:5000',
+      id: id
+    })
+    try {
+      v1.deserialize(obj)
+      expect(false).toEqual(true)
+    } catch (error) {
+      expect(error).toEqual(new Error(`Object does not have valid "protocol" property`))
+    }
+  })
+
+  it('Errors if commData.username is not a string', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC,
+        username: ['this', 'should', 'fail']
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      response: undefined,
+      uri: 'http://localhost:5000',
+      id: id
+    })
+    try {
+      v1.deserialize(obj)
+      expect(false).toEqual(true)
+    } catch (error) {
+      expect(error).toEqual(new Error(`Object does not have valid "username" property`))
+    }
+  })
+  it('Errors if commData.username is not a string', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC,
+        password: ['this', 'should', 'fail']
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      response: undefined,
+      uri: 'http://localhost:5000',
+      id: id
+    })
+    try {
+      v1.deserialize(obj)
+      expect(false).toEqual(true)
+    } catch (error) {
+      expect(error).toEqual(new Error(`Object does not have valid "password" property`))
     }
   })
 })
