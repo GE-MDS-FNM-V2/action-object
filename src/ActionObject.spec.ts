@@ -10,6 +10,7 @@ import { ID } from './utils'
 describe('v1', () => {
   it('Can create ActionObject with valid params', () => {
     v1.create({
+      version: 1,
       actionType: ActionTypeV1.GET,
       commData: {
         commMethod: CommunicationMethodV1.HTTP,
@@ -25,6 +26,7 @@ describe('v1', () => {
     const id = ID()
     const obj = v1.create(
       {
+        version: 1,
         actionType: ActionTypeV1.GET,
         commData: {
           commMethod: CommunicationMethodV1.HTTP,
@@ -41,6 +43,7 @@ describe('v1', () => {
     )
     expect(obj.serialize()).toEqual(
       JSON.stringify({
+        version: 1,
         actionType: 'GET',
         commData: {
           commMethod: 'HTTP',
@@ -60,6 +63,7 @@ describe('v1', () => {
     const id = ID()
     const obj = v1.create(
       {
+        version: 1,
         actionType: ActionTypeV1.GET,
         commData: {
           commMethod: CommunicationMethodV1.HTTP,
@@ -82,6 +86,7 @@ describe('v1', () => {
     const id = ID()
     const obj = v1.create(
       {
+        version: 1,
         actionType: ActionTypeV1.GET,
         commData: {
           commMethod: CommunicationMethodV1.HTTP,
@@ -101,6 +106,7 @@ describe('v1', () => {
   it('Errors if path is not array', () => {
     const id = ID()
     const obj = JSON.stringify({
+      version: 1,
       actionType: ActionTypeV1.GET,
       commData: {
         commMethod: CommunicationMethodV1.HTTP,
@@ -122,6 +128,7 @@ describe('v1', () => {
   it('Errors if path is not array of strings', () => {
     const id = ID()
     const obj = JSON.stringify({
+      version: 1,
       actionType: ActionTypeV1.GET,
       commData: {
         commMethod: CommunicationMethodV1.HTTP,
@@ -144,6 +151,7 @@ describe('v1', () => {
   it('Errors if commData is undefined', () => {
     const id = ID()
     const obj = JSON.stringify({
+      version: 1,
       actionType: ActionTypeV1.GET,
       modifyingValue: 'test',
       path: ['hello', 'world'],
@@ -162,6 +170,7 @@ describe('v1', () => {
   it('Errors if commData.commMethod is undefined', () => {
     const id = ID()
     const obj = JSON.stringify({
+      version: 1,
       actionType: ActionTypeV1.GET,
       commData: {
         protocol: ProtocolV1.JSONRPC
@@ -183,6 +192,7 @@ describe('v1', () => {
   it('Errors if commData.protocol is undefined', () => {
     const id = ID()
     const obj = JSON.stringify({
+      version: 1,
       actionType: ActionTypeV1.GET,
       commData: {
         commMethod: CommunicationMethodV1.HTTP
@@ -205,6 +215,7 @@ describe('v1', () => {
   it('Errors if commData.username is not a string', () => {
     const id = ID()
     const obj = JSON.stringify({
+      version: 1,
       actionType: ActionTypeV1.GET,
       commData: {
         commMethod: CommunicationMethodV1.HTTP,
@@ -227,6 +238,7 @@ describe('v1', () => {
   it('Errors if commData.username is not a string', () => {
     const id = ID()
     const obj = JSON.stringify({
+      version: 1,
       actionType: ActionTypeV1.GET,
       commData: {
         commMethod: CommunicationMethodV1.HTTP,

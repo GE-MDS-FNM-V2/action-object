@@ -25,6 +25,7 @@ export type CommunicationDataV1 = {
 }
 
 export type ActionObjectInformationV1 = {
+  version: 1
   uri: string
   actionType: ActionTypeV1
   path: string[]
@@ -36,7 +37,6 @@ export type ActionObjectInformationV1 = {
 class ActionObjectV1 {
   information: ActionObjectInformationV1
   id: string
-
   constructor(information: ActionObjectInformationV1, id = ID()) {
     this.information = information
     this.id = id
@@ -110,6 +110,7 @@ export const v1 = {
 
     return new ActionObjectV1(
       {
+        version: 1,
         uri,
         actionType,
         path,
