@@ -31,7 +31,10 @@ export type ActionObjectInformationV1 = {
   path: string[]
   modifyingValue: any
   commData: CommunicationDataV1
-  response: undefined | string
+  response: {
+    error: any
+    data: any
+  }
 }
 
 class ActionObjectV1 {
@@ -79,7 +82,7 @@ export const v1 = {
 
     const modifyingValue = requireProperty(rawJson, 'modifyingValue')
 
-    const response = rawJson['response']
+    const response = requireProperty(rawJson, 'response')
 
     const id = requireProperty(rawJson, 'id')
 

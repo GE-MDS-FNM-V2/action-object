@@ -18,7 +18,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000'
     })
   })
@@ -36,7 +39,10 @@ describe('v1', () => {
         },
         modifyingValue: 'test',
         path: ['hello', 'world'],
-        response: undefined,
+        response: {
+          data: 'hello world',
+          error: null
+        },
         uri: 'http://localhost:5000'
       },
       id
@@ -53,7 +59,10 @@ describe('v1', () => {
         },
         modifyingValue: 'test',
         path: ['hello', 'world'],
-        response: undefined,
+        response: {
+          data: 'hello world',
+          error: null
+        },
         uri: 'http://localhost:5000',
         id: id
       })
@@ -73,7 +82,10 @@ describe('v1', () => {
         },
         modifyingValue: 'test',
         path: ['hello', 'world'],
-        response: undefined,
+        response: {
+          data: 'hello world',
+          error: null
+        },
         uri: 'http://localhost:5000'
       },
       id
@@ -94,7 +106,10 @@ describe('v1', () => {
         },
         modifyingValue: 'test',
         path: ['hello', 'world'],
-        response: undefined,
+        response: {
+          data: 'hello world',
+          error: null
+        },
         uri: 'http://localhost:5000'
       },
       id
@@ -114,7 +129,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: {},
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -136,7 +154,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', {}],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -155,7 +176,10 @@ describe('v1', () => {
       actionType: ActionTypeV1.GET,
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -177,7 +201,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -200,7 +227,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -224,7 +254,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -247,7 +280,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
