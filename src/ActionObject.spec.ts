@@ -118,6 +118,28 @@ describe('v1', () => {
     expect(v1.deserialize(serialized)).toEqual(obj)
   })
 
+  it('Can serialize/deserialize valid ActionObject without path+modifyingValue', () => {
+    const id = ID()
+    const obj = v1.create(
+      {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
+      },
+      id
+    )
+    const serialized = obj.serialize()
+    expect(v1.deserialize(serialized)).toEqual(obj)
+  })
+
   it('Errors if path is not array', () => {
     const id = ID()
     const obj = JSON.stringify({

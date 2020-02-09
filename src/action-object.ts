@@ -28,8 +28,8 @@ export type ActionObjectInformationV1 = {
   version: 1
   uri: string
   actionType: ActionTypeV1
-  path: string[]
-  modifyingValue: any
+  path?: string[]
+  modifyingValue?: any
   commData: CommunicationDataV1
   response: {
     error: any
@@ -66,21 +66,24 @@ export const v1 = {
       return Object.keys(ActionTypeV1).includes(value)
     }) as ActionTypeV1
 
-    const path = requireProperty(rawJson, 'path', value => {
+    let path: string[] = []
+    if (rawJson.path) {
+      const value = rawJson.path
       const isArray = Array.isArray(value)
       if (!isArray) {
-        return false
+        throw new Error(`Object does not have valid "path" property`)
       }
       for (let index = 0; index < value.length; index++) {
         const element = value[index]
         if (typeof element !== 'string') {
-          return false
+          throw new Error(`Object does not have valid "path" property`)
+        } else {
+          path.push(element)
         }
       }
-      return true
-    }) as string[]
+    }
 
-    const modifyingValue = requireProperty(rawJson, 'modifyingValue')
+    const modifyingValue = rawJson['modifyingValue']
 
     const response = requireProperty(rawJson, 'response')
 
@@ -110,6 +113,11 @@ export const v1 = {
       }
       return true
     })
+
+    // const resultingObj = {
+    //   version: 1
+    // }
+    // uri && resultingObj[uri] = uri
 
     return new ActionObjectV1(
       {

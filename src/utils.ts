@@ -25,3 +25,9 @@ export const ID = () => {
       .substr(2, 9)
   )
 }
+
+// export const removePropertyIf = (obj, property, validatorFunc) => {
+//   if(!validatorFunc(obi[property])){
+//     const
+//   }
+// }
