@@ -66,8 +66,10 @@ export const v1 = {
       return Object.keys(ActionTypeV1).includes(value)
     }) as ActionTypeV1
 
-    let path: string[] = []
-    if (rawJson.path) {
+    const foundPath = 'path' in rawJson
+
+    const parsePath = (rawPath: any): string[] => {
+      let path: string[] = []
       const value = rawJson.path
       const isArray = Array.isArray(value)
       if (!isArray) {
@@ -81,9 +83,11 @@ export const v1 = {
           path.push(element)
         }
       }
+      return path
     }
 
     const modifyingValue = rawJson['modifyingValue']
+    const version = requireProperty(rawJson, 'version')
 
     const response = requireProperty(rawJson, 'response')
 
@@ -114,22 +118,23 @@ export const v1 = {
       return true
     })
 
-    // const resultingObj = {
-    //   version: 1
-    // }
-    // uri && resultingObj[uri] = uri
+    const actionObjectInfo: ActionObjectInformationV1 = {
+      version,
+      uri,
+      actionType,
+      commData,
+      response: {
+        data: response.data,
+        error: response.error
+      }
+    }
+    if (modifyingValue) {
+      actionObjectInfo.modifyingValue = modifyingValue
+    }
+    if (foundPath) {
+      actionObjectInfo.path = parsePath(rawJson.path)
+    }
 
-    return new ActionObjectV1(
-      {
-        version: 1,
-        uri,
-        actionType,
-        path,
-        modifyingValue,
-        commData,
-        response
-      },
-      id
-    )
+    return new ActionObjectV1(actionObjectInfo, id)
   }
 }
