@@ -1,10 +1,4 @@
-import {
-  v1,
-  ActionTypeV1,
-  CommunicationMethodV1,
-  CommunicationDataV1,
-  ProtocolV1
-} from './action-object'
+import { v1, ActionTypeV1, CommunicationMethodV1, CommunicationDataV1, ProtocolV1 } from '.'
 import { ID } from './utils'
 
 describe('v1', () => {
