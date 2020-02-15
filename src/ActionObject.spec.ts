@@ -1,10 +1,4 @@
-import {
-  v1,
-  ActionTypeV1,
-  CommunicationMethodV1,
-  CommunicationDataV1,
-  ProtocolV1
-} from './action-object'
+import { v1, ActionTypeV1, CommunicationMethodV1, CommunicationDataV1, ProtocolV1 } from '.'
 import { ID } from './utils'
 
 describe('v1', () => {
@@ -18,7 +12,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000'
     })
   })
@@ -36,7 +33,10 @@ describe('v1', () => {
         },
         modifyingValue: 'test',
         path: ['hello', 'world'],
-        response: undefined,
+        response: {
+          data: 'hello world',
+          error: null
+        },
         uri: 'http://localhost:5000'
       },
       id
@@ -53,7 +53,10 @@ describe('v1', () => {
         },
         modifyingValue: 'test',
         path: ['hello', 'world'],
-        response: undefined,
+        response: {
+          data: 'hello world',
+          error: null
+        },
         uri: 'http://localhost:5000',
         id: id
       })
@@ -73,7 +76,10 @@ describe('v1', () => {
         },
         modifyingValue: 'test',
         path: ['hello', 'world'],
-        response: undefined,
+        response: {
+          data: 'hello world',
+          error: null
+        },
         uri: 'http://localhost:5000'
       },
       id
@@ -94,7 +100,32 @@ describe('v1', () => {
         },
         modifyingValue: 'test',
         path: ['hello', 'world'],
-        response: undefined,
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
+      },
+      id
+    )
+    const serialized = obj.serialize()
+    expect(v1.deserialize(serialized)).toEqual(obj)
+  })
+
+  it('Can serialize/deserialize valid ActionObject without path+modifyingValue', () => {
+    const id = ID()
+    const obj = v1.create(
+      {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        response: {
+          data: 'hello world',
+          error: null
+        },
         uri: 'http://localhost:5000'
       },
       id
@@ -114,7 +145,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: {},
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -136,7 +170,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', {}],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -155,7 +192,10 @@ describe('v1', () => {
       actionType: ActionTypeV1.GET,
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -177,7 +217,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -200,7 +243,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -224,7 +270,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })
@@ -247,7 +296,10 @@ describe('v1', () => {
       },
       modifyingValue: 'test',
       path: ['hello', 'world'],
-      response: undefined,
+      response: {
+        data: 'hello world',
+        error: null
+      },
       uri: 'http://localhost:5000',
       id: id
     })

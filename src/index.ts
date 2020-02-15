@@ -28,10 +28,13 @@ export type ActionObjectInformationV1 = {
   version: 1
   uri: string
   actionType: ActionTypeV1
-  path: string[]
-  modifyingValue: any
+  path?: string[]
+  modifyingValue?: any
   commData: CommunicationDataV1
-  response: undefined | string
+  response: {
+    error: any
+    data: any
+  }
 }
 
 class ActionObjectV1 {
@@ -63,23 +66,30 @@ export const v1 = {
       return Object.keys(ActionTypeV1).includes(value)
     }) as ActionTypeV1
 
-    const path = requireProperty(rawJson, 'path', value => {
+    const foundPath = 'path' in rawJson
+
+    const parsePath = (rawPath: any): string[] => {
+      let path: string[] = []
+      const value = rawJson.path
       const isArray = Array.isArray(value)
       if (!isArray) {
-        return false
+        throw new Error(`Object does not have valid "path" property`)
       }
       for (let index = 0; index < value.length; index++) {
         const element = value[index]
         if (typeof element !== 'string') {
-          return false
+          throw new Error(`Object does not have valid "path" property`)
+        } else {
+          path.push(element)
         }
       }
-      return true
-    }) as string[]
+      return path
+    }
 
-    const modifyingValue = requireProperty(rawJson, 'modifyingValue')
+    const modifyingValue = rawJson['modifyingValue']
+    const version = requireProperty(rawJson, 'version')
 
-    const response = rawJson['response']
+    const response = requireProperty(rawJson, 'response')
 
     const id = requireProperty(rawJson, 'id')
 
@@ -108,17 +118,23 @@ export const v1 = {
       return true
     })
 
-    return new ActionObjectV1(
-      {
-        version: 1,
-        uri,
-        actionType,
-        path,
-        modifyingValue,
-        commData,
-        response
-      },
-      id
-    )
+    const actionObjectInfo: ActionObjectInformationV1 = {
+      version,
+      uri,
+      actionType,
+      commData,
+      response: {
+        data: response.data,
+        error: response.error
+      }
+    }
+    if (modifyingValue) {
+      actionObjectInfo.modifyingValue = modifyingValue
+    }
+    if (foundPath) {
+      actionObjectInfo.path = parsePath(rawJson.path)
+    }
+
+    return new ActionObjectV1(actionObjectInfo, id)
   }
 }

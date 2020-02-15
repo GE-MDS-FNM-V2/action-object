@@ -3,8 +3,9 @@
   "version": "0.0.0-development",
   "description": "",
   "keywords": [],
-  "main": "dist/bundle.js",
-  "typings": "dist/types/action-object.d.ts",
+  "main": "dist/bundle-node.js",
+  "browser": "dist/bundle-web.js",
+  "typings": "dist/types/index.d.ts",
   "files": [
     "dist/**/*.*"
   ],
@@ -40,7 +41,10 @@
   "release": {
     "branches": [
       "master",
-      "next"
+      {
+        "name": "next",
+        "prerelease": true
+      }
     ]
   },
   "publishConfig": {
