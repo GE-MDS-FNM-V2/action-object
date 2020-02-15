@@ -93,8 +93,6 @@ export const v1 = {
 
     const id = requireProperty(rawJson, 'id')
 
-    // const protocol = requireProperty(rawJson, 'protocol')
-
     const commData = requireProperty(rawJson, 'commData', unverifiedCommData => {
       const commMethod = requireProperty(unverifiedCommData, 'commMethod', unverifiedCommMethod => {
         return Object.keys(CommunicationMethodV1).includes(unverifiedCommMethod)
