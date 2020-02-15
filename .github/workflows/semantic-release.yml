@@ -3,6 +3,8 @@ on: push
 jobs:
   CI:
     runs-on: ubuntu-latest
+    env:
+      CI: true
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@master
