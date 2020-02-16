@@ -32,10 +32,4 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         doc-location: docs
-        doc-branch: docs
-    - name: Deploy docs
-      uses: bobrown101/deploy-branch@v1.0.1
-      with:
-        branch: docs
-        provider: ZEIT
-        now-token: ${{ secrets.NOW_TOKEN }}
+        doc-branch: gh-pages
