@@ -1,0 +1,41 @@
+name: Semantic Release
+on: push
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@master
+      with:
+        node-version: 13.5
+    - name: Install dependencies
+      run: yarn install
+    - name: Test
+      run: yarn test:prod
+    - name: Build
+      run: yarn build
+    - name: Release to NPM
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npx semantic-release
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Generate docs
+      run: yarn docs
+    - name: Version docs
+      uses: bobrown101/version-docs@v2.0.6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        doc-location: docs
+        doc-branch: docs
+    - name: Deploy docs
+      uses: bobrown101/deploy-branch@v1.0.0
+      with:
+        branch: docs
+        provider: ZEIT
+        now-token: ${{ secrets.NOW_TOKEN }}
