@@ -34,7 +34,7 @@ jobs:
         doc-location: docs
         doc-branch: docs
     - name: Deploy docs
-      uses: bobrown101/deploy-branch@v1.0.0
+      uses: bobrown101/deploy-branch@v1.0.1
       with:
         branch: docs
         provider: ZEIT
