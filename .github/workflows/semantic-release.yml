@@ -27,9 +27,15 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Generate docs
       run: yarn docs
-    - name: Publish docs
+    - name: Version docs
       uses: bobrown101/version-docs@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         doc-location: docs
         doc-branch: docs
+    - name: Deploy docs
+      uses: bobrown101/deploy-branch@v1.0.0
+      with:
+        branch: docs
+        provider: ZEIT
+        now-token: ${{ secrets.NOW_TOKEN }}
