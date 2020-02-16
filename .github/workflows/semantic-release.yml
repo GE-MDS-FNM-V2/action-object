@@ -28,7 +28,7 @@ jobs:
     - name: Generate docs
       run: yarn docs
     - name: Version docs
-      uses: bobrown101/version-docs@v2
+      uses: bobrown101/version-docs@v2.0.1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         doc-location: docs
