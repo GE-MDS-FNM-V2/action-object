@@ -34,7 +34,7 @@ jobs:
         doc-location: docs
         doc-branch: docs
     - name: Deploy docs
-      uses: bobrown101/deploy-branch@v1.0.15
+      uses: bobrown101/deploy-branch@v1.0.16
       with:
         provider: NETLIFY
         netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
