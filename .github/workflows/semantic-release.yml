@@ -40,3 +40,4 @@ jobs:
         netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         netlify-site-id: 3e5f813a-792c-4937-8e96-dc1ad570ce80
         branch: docs
+        github-token: ${{ secrets.GITHUB_TOKEN }}
