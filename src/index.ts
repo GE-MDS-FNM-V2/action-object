@@ -24,6 +24,11 @@ export type CommunicationDataV1 = {
   password?: string
 }
 
+export type IActionObjectResponseV1 = {
+  error?: any
+  data?: any
+}
+
 export type ActionObjectInformationV1 = {
   version: 1
   uri: string
@@ -31,13 +36,16 @@ export type ActionObjectInformationV1 = {
   path?: string[]
   modifyingValue?: any
   commData: CommunicationDataV1
-  response: {
-    error: any
-    data: any
-  }
+  response?: IActionObjectResponseV1
 }
 
-class ActionObjectV1 {
+export interface IActionObjectV1 {
+  information: ActionObjectInformationV1
+  id: string
+  serialize(): string
+}
+
+export class ActionObjectV1 implements IActionObjectV1 {
   information: ActionObjectInformationV1
   id: string
   constructor(information: ActionObjectInformationV1, id = ID()) {
@@ -70,7 +78,7 @@ export const v1 = {
 
     const parsePath = (rawPath: any): string[] => {
       let path: string[] = []
-      const value = rawJson.path
+      const value = rawPath
       const isArray = Array.isArray(value)
       if (!isArray) {
         throw new Error(`Object does not have valid "path" property`)
@@ -86,14 +94,28 @@ export const v1 = {
       return path
     }
 
+    const parseResponse = (rawResponseField: any): IActionObjectResponseV1 => {
+      let throwError = false
+      const error = new Error(`Object does not have valid "response" property`)
+      if (typeof rawResponseField !== 'object') {
+        throwError = true
+      } else if (
+        !Object.keys(rawResponseField).includes('error') &&
+        !Object.keys(rawResponseField).includes('data')
+      ) {
+        throwError = true
+      }
+      if (throwError) {
+        throw error
+      }
+
+      return rawResponseField
+    }
+
     const modifyingValue = rawJson['modifyingValue']
     const version = requireProperty(rawJson, 'version')
 
-    const response = requireProperty(rawJson, 'response')
-
     const id = requireProperty(rawJson, 'id')
-
-    // const protocol = requireProperty(rawJson, 'protocol')
 
     const commData = requireProperty(rawJson, 'commData', unverifiedCommData => {
       const commMethod = requireProperty(unverifiedCommData, 'commMethod', unverifiedCommMethod => {
@@ -122,11 +144,10 @@ export const v1 = {
       version,
       uri,
       actionType,
-      commData,
-      response: {
-        data: response.data,
-        error: response.error
-      }
+      commData
+    }
+    if (rawJson.response) {
+      actionObjectInfo.response = parseResponse(rawJson.response)
     }
     if (modifyingValue) {
       actionObjectInfo.modifyingValue = modifyingValue
