@@ -310,4 +310,69 @@ describe('v1', () => {
       expect(error).toEqual(new Error(`Object does not have valid "password" property`))
     }
   })
+
+  it('Allows no response', () => {
+    const id = ID()
+    const obj = v1
+      .create(
+        {
+          version: 1,
+          actionType: ActionTypeV1.GET,
+          commData: {
+            commMethod: CommunicationMethodV1.HTTP,
+            protocol: ProtocolV1.JSONRPC
+          },
+          uri: 'http://localhost:5000'
+        },
+        id
+      )
+      .serialize()
+    v1.deserialize(obj)
+  })
+
+  it('Errors if response is not object', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      version: 1,
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      uri: 'http://localhost:5000',
+      id: id,
+      response: 'asdf'
+    })
+    try {
+      v1.deserialize(obj)
+      expect(false).toEqual(true)
+    } catch (error) {
+      expect(error).toEqual(new Error(`Object does not have valid "response" property`))
+    }
+  })
+
+  it('Errors if response doesnt have data and doesnt have error', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      version: 1,
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      uri: 'http://localhost:5000',
+      id: id,
+      response: {}
+    })
+    try {
+      v1.deserialize(obj)
+      expect(false).toEqual(true)
+    } catch (error) {
+      expect(error).toEqual(new Error(`Object does not have valid "response" property`))
+    }
+  })
 })
