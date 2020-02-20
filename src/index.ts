@@ -47,7 +47,7 @@ export interface IActionObjectV1 {
   serialize(): string
 }
 
-class ActionObjectV1 implements IActionObjectV1 {
+export class ActionObjectV1 implements IActionObjectV1 {
   information: ActionObjectInformationV1
   id: string
   constructor(information: ActionObjectInformationV1, id = ID()) {
