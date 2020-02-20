@@ -375,4 +375,44 @@ describe('v1', () => {
       expect(error).toEqual(new Error(`Object does not have valid "response" property`))
     }
   })
+
+  it('Allows for only response.error', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      version: 1,
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      uri: 'http://localhost:5000',
+      id: id,
+      response: {
+        error: 'adsf'
+      }
+    })
+    v1.deserialize(obj)
+  })
+
+  it('Allows for only response.data', () => {
+    const id = ID()
+    const obj = JSON.stringify({
+      version: 1,
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      uri: 'http://localhost:5000',
+      id: id,
+      response: {
+        data: 'asdf'
+      }
+    })
+    v1.deserialize(obj)
+  })
 })

@@ -25,8 +25,8 @@ export type CommunicationDataV1 = {
 }
 
 export type IActionObjectResponseV1 = {
-  error: any
-  data: any
+  error?: any
+  data?: any
 }
 
 export type ActionObjectInformationV1 = {
