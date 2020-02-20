@@ -24,6 +24,13 @@ export type CommunicationDataV1 = {
   password?: string
 }
 
+export type IActionObjectResponseV1 =
+  | {
+      error: any
+      data: any
+    }
+  | undefined
+
 export type ActionObjectInformationV1 = {
   version: 1
   uri: string
@@ -31,13 +38,16 @@ export type ActionObjectInformationV1 = {
   path?: string[]
   modifyingValue?: any
   commData: CommunicationDataV1
-  response: {
-    error: any
-    data: any
-  }
+  response: IActionObjectResponseV1
 }
 
-class ActionObjectV1 {
+export interface IActionObjectV1 {
+  information: ActionObjectInformationV1
+  id: string
+  serialize(): string
+}
+
+class ActionObjectV1 implements IActionObjectV1 {
   information: ActionObjectInformationV1
   id: string
   constructor(information: ActionObjectInformationV1, id = ID()) {
