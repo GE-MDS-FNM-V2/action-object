@@ -32,12 +32,12 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         doc-location: docs
-        doc-branch: gh-pages
+        doc-branch: docs
     - name: Deploy docs
       uses: bobrown101/deploy-branch@v2.0.0
       with:
         provider: NETLIFY
         netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         netlify-site-id: 3e5f813a-792c-4937-8e96-dc1ad570ce80
-        branch: gh-pages
+        branch: docs
         github-token: ${{ secrets.GITHUB_TOKEN }}
