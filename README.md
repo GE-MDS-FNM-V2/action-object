@@ -46,5 +46,15 @@ const obj = v1.create({
 }, "ThisIsAnOptionalID")
 ```
 
+## Debugging
+We've added in optional logging to this module. You can enable it by setting the environment variable DEBUG:
+```sh
+DEBUG=ge-fnm:action-object yarn #to enable logging for only the action-object module
+-or-
+DEBUG=ge-fnm:* yarn # for all logging related to ge-fnm
+-or-
+DEBUG=* yarn # enable logging for all installed node_modules that look for the env var DEBUG - please note, this is a lot. You probably dont want this
+
+```
 ## I want to work on this project
 Please see [CONTRIBUTING.md](CONTRIBUTING.md)
