@@ -1,4 +1,7 @@
 import { requireProperty, ID } from './utils'
+import debug from 'debug'
+
+const actionObjectLog = debug('ge-fnm:action-object')
 
 export enum ActionTypeV1 {
   GET = 'GET',
@@ -49,6 +52,7 @@ export class ActionObjectV1 implements IActionObjectV1 {
   information: ActionObjectInformationV1
   id: string
   constructor(information: ActionObjectInformationV1, id = ID()) {
+    actionObjectLog('Creating action object v1 with information', information, ' and id of ', id)
     this.information = information
     this.id = id
   }
@@ -66,76 +70,51 @@ export const v1 = {
     return new ActionObjectV1(information, optionalID)
   },
   deserialize(rawString: string) {
+    actionObjectLog('Deserializing the following string into an action object v1', rawString)
     const rawJson = JSON.parse(rawString)
 
     const uri = requireProperty(rawJson, 'uri')
+    actionObjectLog('Determined uri to be', uri)
 
     const actionType = requireProperty(rawJson, 'actionType', value => {
       return Object.keys(ActionTypeV1).includes(value)
     }) as ActionTypeV1
-
-    const foundPath = 'path' in rawJson
-
-    const parsePath = (rawPath: any): string[] => {
-      let path: string[] = []
-      const value = rawPath
-      const isArray = Array.isArray(value)
-      if (!isArray) {
-        throw new Error(`Object does not have valid "path" property`)
-      }
-      for (let index = 0; index < value.length; index++) {
-        const element = value[index]
-        if (typeof element !== 'string') {
-          throw new Error(`Object does not have valid "path" property`)
-        } else {
-          path.push(element)
-        }
-      }
-      return path
-    }
-
-    const parseResponse = (rawResponseField: any): IActionObjectResponseV1 => {
-      let throwError = false
-      const error = new Error(`Object does not have valid "response" property`)
-      if (typeof rawResponseField !== 'object') {
-        throwError = true
-      } else if (
-        !Object.keys(rawResponseField).includes('error') &&
-        !Object.keys(rawResponseField).includes('data')
-      ) {
-        throwError = true
-      }
-      if (throwError) {
-        throw error
-      }
-
-      return rawResponseField
-    }
+    actionObjectLog('Determined action type to be ', actionType)
 
     const modifyingValue = rawJson['modifyingValue']
+    actionObjectLog('Determined modifyingValue (if any) to be', modifyingValue)
+
     const version = requireProperty(rawJson, 'version')
+    actionObjectLog('Determined verion to be', version)
 
     const id = requireProperty(rawJson, 'id')
+    actionObjectLog('Determined id to be', id)
 
     const commData = requireProperty(rawJson, 'commData', unverifiedCommData => {
+      actionObjectLog('Attempting to parse commData')
+
       const commMethod = requireProperty(unverifiedCommData, 'commMethod', unverifiedCommMethod => {
         return Object.keys(CommunicationMethodV1).includes(unverifiedCommMethod)
       })
+      actionObjectLog('Found comm method of', commData)
 
       const protocol = requireProperty(unverifiedCommData, 'protocol', unverifiedCommMethod => {
         return Object.keys(ProtocolV1).includes(unverifiedCommMethod)
       })
+      actionObjectLog('Found protocol of ', protocol)
 
       if (unverifiedCommData.username) {
-        requireProperty(unverifiedCommData, 'username', unverifiedUsername => {
+        const username = requireProperty(unverifiedCommData, 'username', unverifiedUsername => {
           return typeof unverifiedUsername === 'string'
         })
+        actionObjectLog('Found username of', username)
       }
 
       if (unverifiedCommData.password) {
-        requireProperty(unverifiedCommData, 'password', unverifiedPassword => {
+        const password = requireProperty(unverifiedCommData, 'password', unverifiedPassword => {
           return typeof unverifiedPassword === 'string'
         })
+        actionObjectLog('Found password of', password)
       }
       return true
     })
@@ -147,13 +126,50 @@ export const v1 = {
       commData
     }
     if (rawJson.response) {
+      const parseResponse = (rawResponseField: any): IActionObjectResponseV1 => {
+        let throwError = false
+        const error = new Error(`Object does not have valid "response" property`)
+        if (typeof rawResponseField !== 'object') {
+          throwError = true
+        } else if (
+          !Object.keys(rawResponseField).includes('error') &&
+          !Object.keys(rawResponseField).includes('data')
+        ) {
+          throwError = true
+        }
+        if (throwError) {
+          throw error
+        }
+
+        return rawResponseField
+      }
       actionObjectInfo.response = parseResponse(rawJson.response)
+      actionObjectLog('Found reponse property of', actionObjectInfo.response)
     }
     if (modifyingValue) {
       actionObjectInfo.modifyingValue = modifyingValue
+      actionObjectLog('Found modifying value of', modifyingValue)
     }
-    if (foundPath) {
+    if ('path' in rawJson) {
+      const parsePath = (rawPath: any): string[] => {
+        let path: string[] = []
+        const value = rawPath
+        const isArray = Array.isArray(value)
+        if (!isArray) {
+          throw new Error(`Object does not have valid "path" property`)
+        }
+        for (let index = 0; index < value.length; index++) {
+          const element = value[index]
+          if (typeof element !== 'string') {
+            throw new Error(`Object does not have valid "path" property`)
+          } else {
+            path.push(element)
+          }
+        }
+        return path
+      }
       actionObjectInfo.path = parsePath(rawJson.path)
+      actionObjectLog('Found path of ', actionObjectInfo.path)
     }
 
     return new ActionObjectV1(actionObjectInfo, id)
