@@ -1,4 +1,5 @@
 import { GEError } from './index'
+import { GEPAMErrorCodes } from './GEError'
 const GEPAMError = GEError.GEPAMError
 const GEPamErrorCodes = GEError.GEPAMErrorCodes
 const GECSMError = GEError.GECSMError
@@ -82,6 +83,17 @@ describe('GEError', () => {
       } catch (err) {
         expect(err.stack).not.toBeFalsy()
       }
+    })
+  })
+
+  describe('Functionality over http', () => {
+    it('Serializes with properties', () => {
+      const test = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      expect(JSON.parse(JSON.stringify(test))).toEqual({
+        name: 'GEPAMError',
+        source: GEErrorEnviornmentSource.PAM,
+        status: GEPAMErrorCodes.ADD_CLIENT_ERROR
+      })
     })
   })
 })
