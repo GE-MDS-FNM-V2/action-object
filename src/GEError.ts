@@ -6,24 +6,15 @@ export enum GEErrorEnviornmentSource {
   OTHER = 'OTHER'
 }
 
-export class GEError extends Error {
+class GEError extends Error {
   readonly status: number
   readonly message: string
   readonly name: string
   readonly source: GEErrorEnviornmentSource
 
-  constructor(
-    message = 'GEError',
-    status: number,
-    source: GEErrorEnviornmentSource,
-    name = 'GEError'
-  ) {
+  constructor(message: string, status: number, source: GEErrorEnviornmentSource, name: string) {
     super(message)
 
-    // This is a node thing - not needed, but removes the constructor of this error from the actual stacktrace you care about
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, GEError)
-    }
     this.name = name
     this.message = message
     this.status = status
@@ -51,6 +42,7 @@ export enum GEPAMErrorCodes {
   NOT_LOGGED_IN = 403 // you are not currently authenticated with the radio
 }
 export class GEPAMError extends GEError {
+  /* istanbul ignore next */
   constructor(message = 'GEPAMError', status: GEPAMErrorCodes) {
     super(message, status, GEErrorEnviornmentSource.PAM, 'GEPAMError')
   }
@@ -65,7 +57,17 @@ export enum GECSMErrorCodes {
   NO_FORWARDING_ADDRESS = 421
 }
 export class GECSMError extends GEError {
+  // As far as i know there isnt a way to mock a constructor of the Error object
+  /* istanbul ignore next */
   constructor(message = 'GECSMError', status: GECSMErrorCodes) {
     super(message, status, GEErrorEnviornmentSource.CSM, 'GECSMError')
   }
+}
+
+export default {
+  GEErrorEnviornmentSource,
+  GEPAMError,
+  GEPAMErrorCodes,
+  GECSMError,
+  GECSMErrorCodes
 }
