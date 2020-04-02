@@ -1,34 +1,34 @@
-import { GEError } from './index'
-import { GEPAMErrorCodes } from './GEError'
-const GEPAMError = GEError.GEPAMError
-const GEPamErrorCodes = GEError.GEPAMErrorCodes
-const GECSMError = GEError.GECSMError
-const GECSMErrorCodes = GEError.GECSMErrorCodes
-const GEErrorEnviornmentSource = GEError.GEErrorEnviornmentSource
+import { GEErrors } from './index'
+const GEError = GEErrors.GEError
+const GEPAMError = GEErrors.GEPAMError
+const GEPAMErrorCodes = GEErrors.GEPAMErrorCodes
+const GECSMError = GEErrors.GECSMError
+const GECSMErrorCodes = GEErrors.GECSMErrorCodes
+const GEErrorEnviornmentSource = GEErrors.GEErrorEnviornmentSource
 describe('GEError', () => {
   describe('GEPAMError', () => {
     it('Should create GEPAMError', () => {
-      const test = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      const test = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
       expect(test).toBeTruthy()
     })
     it('Should create GEPAMError with correct code', () => {
-      const error = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
-      expect(error.status).toEqual(GEPamErrorCodes.ADD_CLIENT_ERROR)
+      const error = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
+      expect(error.status).toEqual(GEPAMErrorCodes.ADD_CLIENT_ERROR)
     })
     it('Should create GEPAMError with correct message', () => {
-      const error = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      const error = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
       expect(error.message).toEqual('test message')
     })
     it('Should create GEPAMError with correct name', () => {
-      const error = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      const error = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
       expect(error.name).toEqual('GEPAMError')
     })
     it('Should create GEPAMError with correct source', () => {
-      const error = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      const error = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
       expect(error.source).toEqual(GEErrorEnviornmentSource.PAM)
     })
     it('Should throw GEPAMError', () => {
-      const error = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      const error = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
       try {
         throw error
         expect(false).toEqual(true)
@@ -37,11 +37,18 @@ describe('GEError', () => {
       }
     })
     it('Should throw GEPAMError with stack', () => {
-      const error = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      const error = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
       try {
         throw error
       } catch (err) {
         expect(err.stack).not.toBeFalsy()
+      }
+    })
+    it('Should throw GEPAMError with message', () => {
+      try {
+        throw new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
+      } catch (err) {
+        expect(err.message).toEqual('test message')
       }
     })
   })
@@ -84,16 +91,27 @@ describe('GEError', () => {
         expect(err.stack).not.toBeFalsy()
       }
     })
+    it('Should throw GEPAMError with message', () => {
+      try {
+        throw new GECSMError('test message', GECSMErrorCodes.NO_FORWARDING_ADDRESS)
+      } catch (err) {
+        expect(err.message).toEqual('test message')
+      }
+    })
   })
 
-  describe('Functionality over http', () => {
-    it('Serializes with properties', () => {
-      const test = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
-      expect(JSON.parse(JSON.stringify(test))).toEqual({
-        name: 'GEPAMError',
-        source: GEErrorEnviornmentSource.PAM,
-        status: GEPAMErrorCodes.ADD_CLIENT_ERROR
-      })
+  describe('Serialization', () => {
+    it('Serializes GEPAMError with properties', () => {
+      const err = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
+      const serialized = err.toJSON()
+      const deserialized = GEError.fromJSON(serialized)
+      expect(deserialized).toEqual(err)
+    })
+    it('Serializes GECSMError with properties', () => {
+      const err = new GECSMError('test message', GECSMErrorCodes.NO_FORWARDING_ADDRESS)
+      const serialized = err.toJSON()
+      const deserialized = GEError.fromJSON(serialized)
+      expect(deserialized).toEqual(err)
     })
   })
 })

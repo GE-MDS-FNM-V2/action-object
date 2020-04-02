@@ -177,4 +177,4 @@ export const v1 = {
   }
 }
 
-export const GEError = ErrorObjects
+export const GEErrors = ErrorObjects

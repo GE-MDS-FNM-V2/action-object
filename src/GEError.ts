@@ -6,19 +6,49 @@ export enum GEErrorEnviornmentSource {
   OTHER = 'OTHER'
 }
 
-class GEError extends Error {
+export type GEErrorJSON = {
+  status: number
+  message: string
+  name: string
+  source: GEErrorEnviornmentSource
+  stack?: string
+}
+export class GEError extends Error {
   readonly status: number
-  readonly message: string
   readonly name: string
   readonly source: GEErrorEnviornmentSource
+  readonly stack?: string
 
-  constructor(message: string, status: number, source: GEErrorEnviornmentSource, name: string) {
+  constructor(
+    message: string,
+    status: number,
+    source: GEErrorEnviornmentSource,
+    name: string,
+    stack?: string
+  ) {
     super(message)
 
     this.name = name
-    this.message = message
     this.status = status
     this.source = source
+    if (stack) {
+      this.stack = stack
+    }
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
+
+  public toJSON(): GEErrorJSON {
+    return {
+      status: this.status,
+      message: this.message,
+      name: this.name,
+      source: this.source,
+      stack: this.stack
+    }
+  }
+
+  static fromJSON(rawData: GEErrorJSON) {
+    return new GEError(rawData.message, rawData.status, rawData.source, rawData.name, rawData.stack)
   }
 }
 /*****************************************
@@ -43,8 +73,15 @@ export enum GEPAMErrorCodes {
 }
 export class GEPAMError extends GEError {
   /* istanbul ignore next */
-  constructor(message = 'GEPAMError', status: GEPAMErrorCodes) {
+  constructor(message: string, status: GEPAMErrorCodes) {
     super(message, status, GEErrorEnviornmentSource.PAM, 'GEPAMError')
+
+    /* istanbul ignore next */
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
+
+  toJSON() {
+    return super.toJSON()
   }
 }
 
@@ -59,12 +96,20 @@ export enum GECSMErrorCodes {
 export class GECSMError extends GEError {
   // As far as i know there isnt a way to mock a constructor of the Error object
   /* istanbul ignore next */
-  constructor(message = 'GECSMError', status: GECSMErrorCodes) {
+  constructor(message: string, status: GECSMErrorCodes) {
     super(message, status, GEErrorEnviornmentSource.CSM, 'GECSMError')
+
+    /* istanbul ignore next */
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
+
+  toJSON() {
+    return super.toJSON()
   }
 }
 
 export default {
+  GEError,
   GEErrorEnviornmentSource,
   GEPAMError,
   GEPAMErrorCodes,
