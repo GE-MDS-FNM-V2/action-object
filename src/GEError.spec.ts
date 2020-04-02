@@ -7,7 +7,8 @@ const GEErrorEnviornmentSource = GEError.GEErrorEnviornmentSource
 describe('GEError', () => {
   describe('GEPAMError', () => {
     it('Should create GEPAMError', () => {
-      new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      const test = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
+      expect(test).toBeTruthy()
     })
     it('Should create GEPAMError with correct code', () => {
       const error = new GEPAMError('test message', GEPamErrorCodes.ADD_CLIENT_ERROR)
@@ -46,7 +47,8 @@ describe('GEError', () => {
 
   describe('GECSMError', () => {
     it('Should create GECSMError', () => {
-      new GECSMError('test message', GECSMErrorCodes.NO_FORWARDING_ADDRESS)
+      const test = new GECSMError('test message', GECSMErrorCodes.NO_FORWARDING_ADDRESS)
+      expect(test).toBeTruthy()
     })
     it('Should create GECSMError with correct code', () => {
       const error = new GECSMError('test message', GECSMErrorCodes.NO_FORWARDING_ADDRESS)
