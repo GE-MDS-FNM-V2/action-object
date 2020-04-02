@@ -1,4 +1,5 @@
 import { requireProperty, ID } from './utils'
+import ErrorObjects from './GEError'
 import debug from 'debug'
 
 const actionObjectLog = debug('ge-fnm:action-object')
@@ -175,3 +176,5 @@ export const v1 = {
     return new ActionObjectV1(actionObjectInfo, id)
   }
 }
+
+export const GEError = ErrorObjects
