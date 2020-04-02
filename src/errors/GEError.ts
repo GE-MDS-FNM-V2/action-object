@@ -33,8 +33,10 @@ export class GEError extends Error {
 /*****************************************
  * PAM
  ****************************************/
+
 // these error codes draw inspiration from HTTP error codes
 // https://httpstatuses.com/
+
 export enum GEPAMErrorCodes {
   UNKOWN_CLIENT_TYPE = 415, // ex: known client types are JSONRPC, and serial expected
   ADD_CLIENT_ERROR = 412, // adding a pam client fails
@@ -54,20 +56,16 @@ export class GEPAMError extends GEError {
   }
 }
 
-export class GEPAMUnkownClientError extends GEError {
-  constructor(message = 'GECSMError', status: number) {
-    super(message, status, GEErrorEnviornmentSource.PAM)
-  }
+/*****************************************
+ * CSM
+ ****************************************/
+// these error codes draw inspiration from HTTP error codes
+// https://httpstatuses.com/
+export enum GECSMErrorCodes {
+  NO_FORWARDING_ADDRESS = 421
 }
-
 export class GECSMError extends GEError {
-  constructor(message = 'GECSMError', status: number) {
-    super(message, status, GEErrorEnviornmentSource.CSM)
-  }
-}
-
-export class GEFRONTENDError extends GEError {
-  constructor(message = 'GECSMError', status: number) {
-    super(message, status, GEErrorEnviornmentSource.FRONTEND)
+  constructor(message = 'GECSMError', status: GECSMErrorCodes) {
+    super(message, status, GEErrorEnviornmentSource.CSM, 'GECSMError')
   }
 }
