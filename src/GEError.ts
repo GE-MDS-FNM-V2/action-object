@@ -69,7 +69,8 @@ export enum GEPAMErrorCodes {
   UNSUPPORTED_ACTION_TYPE = 501, // ex: GET, INIT, and SET are valid action types
   INVALID_ACTION = 400, // a supported action type did not have the information it was supposed to
   NETWORK_ERROR = 500, // could not reach the radio
-  NOT_LOGGED_IN = 403 // you are not currently authenticated with the radio
+  NOT_LOGGED_IN = 403, // you are not currently authenticated with the radio
+  RADIO_ERROR = 405 // the response from a radio returns an error
 }
 export class GEPAMError extends GEError {
   /* istanbul ignore next */
