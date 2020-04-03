@@ -92,7 +92,8 @@ export class GEPAMError extends GEError {
 // these error codes draw inspiration from HTTP error codes
 // https://httpstatuses.com/
 export enum GECSMErrorCodes {
-  NO_FORWARDING_ADDRESS = 421
+  NO_FORWARDING_ADDRESS = 421, // The CSM needs a forwarding address because the action cannot be performed locally
+  REMOTE_CSM_CONNECTION_FAILURE = 422 // The POST request to the remote CSM has failed
 }
 export class GECSMError extends GEError {
   // As far as i know there isnt a way to mock a constructor of the Error object
