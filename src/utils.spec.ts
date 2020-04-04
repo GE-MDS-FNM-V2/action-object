@@ -1,4 +1,5 @@
 import { requireProperty } from './utils'
+import { GEActionObjectError, GEActionObjectErrorCodes } from './GEError'
 
 describe('requireProperty', () => {
   it('Throws error if property doesnt exist', () => {
@@ -16,7 +17,12 @@ describe('requireProperty', () => {
       const testObj = ''
       requireProperty(testObj, 'asdf')
     } catch (error) {
-      expect(error).toEqual(new Error('Provided obj is not an object'))
+      expect(error).toEqual(
+        new GEActionObjectError(
+          'Cannot get property off of a non-object type',
+          GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+        )
+      )
     }
   })
   it('Returns property if it does exist', () => {

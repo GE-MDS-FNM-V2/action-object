@@ -3,6 +3,7 @@ export enum GEErrorEnviornmentSource {
   PAM = 'PAM',
   FRONTEND = 'FRONTEND',
   RADIO = 'RADIO',
+  ACTION_OBJECT = 'ACTION_OBJECT',
   OTHER = 'OTHER'
 }
 
@@ -110,11 +111,34 @@ export class GECSMError extends GEError {
   }
 }
 
+/*****************************************
+ * ACTION_OBJECT
+ ****************************************/
+export enum GEActionObjectErrorCodes {
+  DESERIALIZATION_ERROR = 500
+}
+export class GEActionObjectError extends GEError {
+  // As far as i know there isnt a way to mock a constructor of the Error object
+  /* istanbul ignore next */
+  constructor(message: string, status: GEActionObjectErrorCodes) {
+    super(message, status, GEErrorEnviornmentSource.ACTION_OBJECT, 'GEActionObjectError')
+
+    /* istanbul ignore next */
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
+
+  toJSON() {
+    return super.toJSON()
+  }
+}
+
 export default {
   GEError,
   GEErrorEnviornmentSource,
   GEPAMError,
   GEPAMErrorCodes,
   GECSMError,
-  GECSMErrorCodes
+  GECSMErrorCodes,
+  GEActionObjectError,
+  GEActionObjectErrorCodes
 }

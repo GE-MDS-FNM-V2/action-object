@@ -1,13 +1,31 @@
+import { GEActionObjectError, GEActionObjectErrorCodes } from './GEError'
+import debug from 'debug'
+
+const actionObjectLog = debug('ge-fnm:action-object')
+
 export const requireProperty = (
   obj: any,
   prop: string,
   validator: (val: any) => boolean = () => true
 ) => {
+  actionObjectLog('Looking for property', prop, ' on obj', obj)
   if (typeof obj !== 'object') {
-    throw new Error('Provided obj is not an object')
+    actionObjectLog('Cannot get property off of a non-object type')
+    throw new GEActionObjectError(
+      'Cannot get property off of a non-object type',
+      GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+    )
   }
   if (!Object.keys(obj).includes(prop) || !validator(obj[prop])) {
-    throw new Error(`Object does not have valid "${prop}" property`)
+    actionObjectLog(
+      'Provided object does not have the property',
+      prop,
+      'or the property is not valid'
+    )
+    throw new GEActionObjectError(
+      `Object does not have valid "${prop}" property`,
+      GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+    )
   } else {
     return obj[prop]
   }
@@ -25,9 +43,3 @@ export const ID = () => {
       .substr(2, 9)
   )
 }
-
-// export const removePropertyIf = (obj, property, validatorFunc) => {
-//   if(!validatorFunc(obi[property])){
-//     const
-//   }
-// }
