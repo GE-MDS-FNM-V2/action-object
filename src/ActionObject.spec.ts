@@ -1,5 +1,13 @@
-import { v1, ActionTypeV1, CommunicationMethodV1, CommunicationDataV1, ProtocolV1 } from '.'
+import {
+  v1,
+  ActionTypeV1,
+  CommunicationMethodV1,
+  CommunicationDataV1,
+  ProtocolV1,
+  ActionObjectV1
+} from '.'
 import { ID } from './utils'
+import { GEPAMError, GEPAMErrorCodes, GECSMError, GECSMErrorCodes } from './GEError'
 
 describe('v1', () => {
   it('Can create ActionObject with valid params', () => {
@@ -395,7 +403,6 @@ describe('v1', () => {
   })
 
   it('Allows for only response.error', () => {
-    const id = ID()
     const obj = {
       information: {
         version: 1,
@@ -408,12 +415,38 @@ describe('v1', () => {
         path: ['hello', 'world'],
         uri: 'http://localhost:5000',
         response: {
-          error: 'adsf'
+          error: new GEPAMError('test pam error 123456789', GEPAMErrorCodes.ADD_CLIENT_ERROR)
         }
       },
-      id: id
+      id: ID()
     }
     v1.deserialize(obj)
+  })
+
+  it('Does not allow anything that isnt a GEError on the error field', () => {
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        uri: 'http://localhost:5000',
+        response: {
+          error: 'not a ge error'
+        }
+      },
+      id: ID()
+    }
+    try {
+      v1.deserialize(obj)
+      expect(false).toEqual(true)
+    } catch (error) {
+      expect(error).toBeTruthy()
+    }
   })
 
   it('Allows for only response.data', () => {
@@ -436,5 +469,79 @@ describe('v1', () => {
       id: id
     }
     v1.deserialize(obj)
+  })
+
+  /**
+   * Automatic error serialization / deserialization
+   */
+
+  it('Automatically serializes GEError if GEError is present on response.error prop', () => {
+    const err = v1
+      .create({
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        uri: 'http://localhost:5000',
+        response: {
+          error: new GEPAMError('test pam error', GEPAMErrorCodes.ADD_CLIENT_ERROR)
+        }
+      })
+      .serialize()
+
+    expect(err.information.response?.error).toEqual(
+      expect.objectContaining({
+        message: 'test pam error',
+        name: 'GEPAMError',
+        source: 'PAM'
+      })
+    )
+  })
+
+  it('Automatically deserializes GEError if GEError is present on response.error prop', () => {
+    const actionObj = v1.create({
+      version: 1,
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      uri: 'http://localhost:5000',
+      response: {
+        error: new GEPAMError('test pam error', GEPAMErrorCodes.ADD_CLIENT_ERROR)
+      }
+    })
+
+    expect(actionObj).toEqual(v1.deserialize(actionObj.serialize()))
+  })
+
+  it('Will leave the error alone if its not a GEError', () => {
+    const actionObj = v1.create({
+      version: 1,
+      actionType: ActionTypeV1.GET,
+      commData: {
+        commMethod: CommunicationMethodV1.HTTP,
+        protocol: ProtocolV1.JSONRPC
+      },
+      modifyingValue: 'test',
+      path: ['hello', 'world'],
+      uri: 'http://localhost:5000',
+      response: {
+        error: new GECSMError('test csm error', GECSMErrorCodes.NO_FORWARDING_ADDRESS)
+      }
+    })
+
+    expect(v1.deserialize(actionObj.serialize()).information.response?.error.message).toEqual(
+      'test csm error'
+    )
+    expect(v1.deserialize(actionObj.serialize()).information.response?.error.status).toEqual(
+      GECSMErrorCodes.NO_FORWARDING_ADDRESS
+    )
   })
 })

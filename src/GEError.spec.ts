@@ -172,7 +172,7 @@ describe('GEError', () => {
     })
   })
 
-  describe('Serialization', () => {
+  describe('Serialization / Deserialization', () => {
     it('Serializes GEPAMError with properties', () => {
       const err = new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR)
       const serialized = err.toJSON()
@@ -193,6 +193,60 @@ describe('GEError', () => {
       const serialized = err.toJSON()
       const deserialized = GEError.fromJSON(serialized)
       expect(deserialized).toEqual(err)
+    })
+
+    it('Errors if no message prop', () => {
+      try {
+        // @ts-ignore
+        GEError.fromJSON({
+          source: GEErrorEnviornmentSource.CSM,
+          status: GECSMErrorCodes.REMOTE_CSM_CONNECTION_FAILURE,
+          name: 'asdf'
+        })
+        expect(false).toEqual(true)
+      } catch (error) {
+        expect(error).toBeTruthy()
+      }
+    })
+
+    it('Errors if no status prop', () => {
+      try {
+        // @ts-ignore
+        GEError.fromJSON({
+          message: 'asdfasdf',
+          source: GEErrorEnviornmentSource.CSM,
+          name: 'asdf'
+        })
+        expect(false).toEqual(true)
+      } catch (error) {
+        expect(error).toBeTruthy()
+      }
+    })
+    it('Errors if no name prop', () => {
+      try {
+        // @ts-ignore
+        GEError.fromJSON({
+          message: 'asdfasdf',
+          status: GECSMErrorCodes.REMOTE_CSM_CONNECTION_FAILURE,
+          source: GEErrorEnviornmentSource.CSM
+        })
+        expect(false).toEqual(true)
+      } catch (error) {
+        expect(error).toBeTruthy()
+      }
+    })
+    it('Errors if no source prop', () => {
+      try {
+        // @ts-ignore
+        GEError.fromJSON({
+          message: 'asdfasdf',
+          status: GECSMErrorCodes.REMOTE_CSM_CONNECTION_FAILURE,
+          name: GEErrorEnviornmentSource.CSM
+        })
+        expect(false).toEqual(true)
+      } catch (error) {
+        expect(error).toBeTruthy()
+      }
     })
   })
 })
