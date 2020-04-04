@@ -41,8 +41,8 @@ describe('v1', () => {
       },
       id
     )
-    expect(obj.serialize()).toEqual(
-      JSON.stringify({
+    expect(obj.serialize()).toEqual({
+      information: {
         version: 1,
         actionType: 'GET',
         commData: {
@@ -57,10 +57,10 @@ describe('v1', () => {
           data: 'hello world',
           error: null
         },
-        uri: 'http://localhost:5000',
-        id: id
-      })
-    )
+        uri: 'http://localhost:5000'
+      },
+      id: id
+    })
   })
   it('Can deserialize valid ActionObject', () => {
     const id = ID()
@@ -136,22 +136,24 @@ describe('v1', () => {
 
   it('Errors if path is not array', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP,
-        protocol: ProtocolV1.JSONRPC
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: {},
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
       },
-      modifyingValue: 'test',
-      path: {},
-      response: {
-        data: 'hello world',
-        error: null
-      },
-      uri: 'http://localhost:5000',
       id: id
-    })
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -161,22 +163,24 @@ describe('v1', () => {
   })
   it('Errors if path is not array of strings', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP,
-        protocol: ProtocolV1.JSONRPC
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', {}],
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
       },
-      modifyingValue: 'test',
-      path: ['hello', {}],
-      response: {
-        data: 'hello world',
-        error: null
-      },
-      uri: 'http://localhost:5000',
       id: id
-    })
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -187,18 +191,20 @@ describe('v1', () => {
 
   it('Errors if commData is undefined', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      response: {
-        data: 'hello world',
-        error: null
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
       },
-      uri: 'http://localhost:5000',
       id: id
-    })
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -209,21 +215,23 @@ describe('v1', () => {
 
   it('Errors if commData.commMethod is undefined', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        protocol: ProtocolV1.JSONRPC
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
       },
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      response: {
-        data: 'hello world',
-        error: null
-      },
-      uri: 'http://localhost:5000',
       id: id
-    })
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -234,22 +242,24 @@ describe('v1', () => {
 
   it('Errors if commData.protocol is undefined', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP
-        // protocol: ProtocolV1.JSONRPC,
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP
+          // protocol: ProtocolV1.JSONRPC,
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
       },
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      response: {
-        data: 'hello world',
-        error: null
-      },
-      uri: 'http://localhost:5000',
       id: id
-    })
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -260,23 +270,25 @@ describe('v1', () => {
 
   it('Errors if commData.username is not a string', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP,
-        protocol: ProtocolV1.JSONRPC,
-        username: ['this', 'should', 'fail']
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC,
+          username: ['this', 'should', 'fail']
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
       },
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      response: {
-        data: 'hello world',
-        error: null
-      },
-      uri: 'http://localhost:5000',
       id: id
-    })
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -286,23 +298,25 @@ describe('v1', () => {
   })
   it('Errors if commData.username is not a string', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP,
-        protocol: ProtocolV1.JSONRPC,
-        password: ['this', 'should', 'fail']
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC,
+          password: ['this', 'should', 'fail']
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        response: {
+          data: 'hello world',
+          error: null
+        },
+        uri: 'http://localhost:5000'
       },
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      response: {
-        data: 'hello world',
-        error: null
-      },
-      uri: 'http://localhost:5000',
       id: id
-    })
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -332,19 +346,21 @@ describe('v1', () => {
 
   it('Errors if response is not object', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP,
-        protocol: ProtocolV1.JSONRPC
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        uri: 'http://localhost:5000',
+        response: 'asdf'
       },
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      uri: 'http://localhost:5000',
-      id: id,
-      response: 'asdf'
-    })
+      id: id
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -355,19 +371,21 @@ describe('v1', () => {
 
   it('Errors if response doesnt have data and doesnt have error', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP,
-        protocol: ProtocolV1.JSONRPC
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        uri: 'http://localhost:5000',
+        response: {}
       },
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      uri: 'http://localhost:5000',
-      id: id,
-      response: {}
-    })
+      id: id
+    }
     try {
       v1.deserialize(obj)
       expect(false).toEqual(true)
@@ -378,41 +396,45 @@ describe('v1', () => {
 
   it('Allows for only response.error', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP,
-        protocol: ProtocolV1.JSONRPC
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        uri: 'http://localhost:5000',
+        response: {
+          error: 'adsf'
+        }
       },
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      uri: 'http://localhost:5000',
-      id: id,
-      response: {
-        error: 'adsf'
-      }
-    })
+      id: id
+    }
     v1.deserialize(obj)
   })
 
   it('Allows for only response.data', () => {
     const id = ID()
-    const obj = JSON.stringify({
-      version: 1,
-      actionType: ActionTypeV1.GET,
-      commData: {
-        commMethod: CommunicationMethodV1.HTTP,
-        protocol: ProtocolV1.JSONRPC
+    const obj = {
+      information: {
+        version: 1,
+        actionType: ActionTypeV1.GET,
+        commData: {
+          commMethod: CommunicationMethodV1.HTTP,
+          protocol: ProtocolV1.JSONRPC
+        },
+        modifyingValue: 'test',
+        path: ['hello', 'world'],
+        uri: 'http://localhost:5000',
+        response: {
+          data: 'asdf'
+        }
       },
-      modifyingValue: 'test',
-      path: ['hello', 'world'],
-      uri: 'http://localhost:5000',
-      id: id,
-      response: {
-        data: 'asdf'
-      }
-    })
+      id: id
+    }
     v1.deserialize(obj)
   })
 })

@@ -46,7 +46,7 @@ export type ActionObjectInformationV1 = {
 export interface IActionObjectV1 {
   information: ActionObjectInformationV1
   id: string
-  serialize(): string
+  serialize(): { information: ActionObjectInformationV1; id: string }
 }
 
 export class ActionObjectV1 implements IActionObjectV1 {
@@ -58,11 +58,11 @@ export class ActionObjectV1 implements IActionObjectV1 {
     this.id = id
   }
 
-  serialize() {
-    return JSON.stringify({
-      ...this.information,
+  serialize(): { information: ActionObjectInformationV1; id: string } {
+    return {
+      information: this.information,
       id: this.id
-    })
+    }
   }
 }
 
@@ -70,28 +70,28 @@ export const v1 = {
   create(information: ActionObjectInformationV1, optionalID?: string) {
     return new ActionObjectV1(information, optionalID)
   },
-  deserialize(rawString: string) {
-    actionObjectLog('Deserializing the following string into an action object v1', rawString)
-    const rawJson = JSON.parse(rawString)
+  deserialize(rawJson: any) {
+    const id = requireProperty(rawJson, 'id')
+    actionObjectLog('Determined id to be', id)
 
-    const uri = requireProperty(rawJson, 'uri')
+    const information = requireProperty(rawJson, 'information')
+    actionObjectLog('Found information property')
+
+    const uri = requireProperty(information, 'uri')
     actionObjectLog('Determined uri to be', uri)
 
-    const actionType = requireProperty(rawJson, 'actionType', value => {
+    const actionType = requireProperty(information, 'actionType', value => {
       return Object.keys(ActionTypeV1).includes(value)
     }) as ActionTypeV1
     actionObjectLog('Determined action type to be ', actionType)
 
-    const modifyingValue = rawJson['modifyingValue']
+    const modifyingValue = information['modifyingValue']
     actionObjectLog('Determined modifyingValue (if any) to be', modifyingValue)
 
-    const version = requireProperty(rawJson, 'version')
+    const version = requireProperty(information, 'version')
     actionObjectLog('Determined verion to be', version)
 
-    const id = requireProperty(rawJson, 'id')
-    actionObjectLog('Determined id to be', id)
-
-    const commData = requireProperty(rawJson, 'commData', unverifiedCommData => {
+    const commData = requireProperty(information, 'commData', unverifiedCommData => {
       actionObjectLog('Attempting to parse commData')
 
       const commMethod = requireProperty(unverifiedCommData, 'commMethod', unverifiedCommMethod => {
@@ -126,7 +126,7 @@ export const v1 = {
       actionType,
       commData
     }
-    if (rawJson.response) {
+    if (information.response) {
       const parseResponse = (rawResponseField: any): IActionObjectResponseV1 => {
         let throwError = false
         const error = new Error(`Object does not have valid "response" property`)
@@ -144,14 +144,14 @@ export const v1 = {
 
         return rawResponseField
       }
-      actionObjectInfo.response = parseResponse(rawJson.response)
+      actionObjectInfo.response = parseResponse(information.response)
       actionObjectLog('Found reponse property of', actionObjectInfo.response)
     }
     if (modifyingValue) {
       actionObjectInfo.modifyingValue = modifyingValue
       actionObjectLog('Found modifying value of', modifyingValue)
     }
-    if ('path' in rawJson) {
+    if ('path' in information) {
       const parsePath = (rawPath: any): string[] => {
         let path: string[] = []
         const value = rawPath
@@ -169,7 +169,7 @@ export const v1 = {
         }
         return path
       }
-      actionObjectInfo.path = parsePath(rawJson.path)
+      actionObjectInfo.path = parsePath(information.path)
       actionObjectLog('Found path of ', actionObjectInfo.path)
     }
 
