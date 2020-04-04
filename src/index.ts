@@ -1,5 +1,5 @@
 import { requireProperty, ID } from './utils'
-import ErrorObjects from './GEError'
+import ErrorObjects, { GEActionObjectError, GEActionObjectErrorCodes, GEError } from './GEError'
 import debug from 'debug'
 
 const actionObjectLog = debug('ge-fnm:action-object')
@@ -59,8 +59,16 @@ export class ActionObjectV1 implements IActionObjectV1 {
   }
 
   serialize(): { information: ActionObjectInformationV1; id: string } {
+    const information = {
+      ...this.information
+    }
+    if (information.response && information.response.error) {
+      const rawErr = information.response.error
+      const serializedError = rawErr.toJSON()
+      information.response.error = serializedError
+    }
     return {
-      information: this.information,
+      information,
       id: this.id
     }
   }
@@ -129,17 +137,46 @@ export const v1 = {
     if (information.response) {
       const parseResponse = (rawResponseField: any): IActionObjectResponseV1 => {
         let throwError = false
-        const error = new Error(`Object does not have valid "response" property`)
+
+        /**
+         * The following block ensures that if the response field exists, its an object that has either a response field or a data field
+         */
         if (typeof rawResponseField !== 'object') {
+          actionObjectLog('Response prop exists but isnt an object')
           throwError = true
         } else if (
           !Object.keys(rawResponseField).includes('error') &&
           !Object.keys(rawResponseField).includes('data')
         ) {
+          actionObjectLog(
+            'Response field needs an error or a data field if response is to be present'
+          )
           throwError = true
         }
+
         if (throwError) {
-          throw error
+          throw new GEActionObjectError(
+            `Object does not have valid "response" property`,
+            GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+          )
+        }
+
+        /**
+         * the following will ensure that if the error field exists, it can be deserialized into a GEError
+         */
+        if (rawResponseField.error) {
+          // Generally a bad practice to swallow errors, but here the original error message is
+          // "GEActionObjectError: Cannot get property off of a non-object type"
+          // and that is useless
+          try {
+            const deserialized = GEError.fromJSON(rawResponseField.error)
+            rawResponseField.error = deserialized
+          } catch (error) {
+            throw new GEActionObjectError(
+              'response.error is not a valid GEError Object - ' + error.message,
+              GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+            )
+          }
         }
 
         return rawResponseField
@@ -157,12 +194,18 @@ export const v1 = {
         const value = rawPath
         const isArray = Array.isArray(value)
         if (!isArray) {
-          throw new Error(`Object does not have valid "path" property`)
+          throw new GEActionObjectError(
+            `Object does not have valid "path" property`,
+            GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+          )
         }
         for (let index = 0; index < value.length; index++) {
           const element = value[index]
           if (typeof element !== 'string') {
-            throw new Error(`Object does not have valid "path" property`)
+            throw new GEActionObjectError(
+              `Object does not have valid "path" property`,
+              GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+            )
           } else {
             path.push(element)
           }

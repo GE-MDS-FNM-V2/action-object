@@ -1,3 +1,5 @@
+import { requireProperty } from './utils'
+
 export enum GEErrorEnviornmentSource {
   CSM = 'CSM',
   PAM = 'PAM',
@@ -19,6 +21,7 @@ export class GEError extends Error {
   readonly name: string
   readonly source: GEErrorEnviornmentSource
   readonly stack?: string
+  readonly message: string
 
   constructor(
     message: string,
@@ -32,6 +35,7 @@ export class GEError extends Error {
     this.name = name
     this.status = status
     this.source = source
+    this.message = message
     if (stack) {
       this.stack = stack
     }
@@ -49,7 +53,35 @@ export class GEError extends Error {
   }
 
   static fromJSON(rawData: GEErrorJSON) {
-    return new GEError(rawData.message, rawData.status, rawData.source, rawData.name, rawData.stack)
+    if (!rawData.message) {
+      throw new GEActionObjectError(
+        'Error does not have valid "message" property',
+        GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+      )
+    } else if (!rawData.name) {
+      throw new GEActionObjectError(
+        'Error does not have valid "name" property',
+        GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+      )
+    } else if (!rawData.source) {
+      throw new GEActionObjectError(
+        'Error does not have valid "source" property',
+        GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+      )
+    } else if (!rawData.status) {
+      throw new GEActionObjectError(
+        'Error does not have valid "status" property',
+        GEActionObjectErrorCodes.DESERIALIZATION_ERROR
+      )
+    } else {
+      return new GEError(
+        rawData.message,
+        rawData.status,
+        rawData.source,
+        rawData.name,
+        rawData.stack
+      )
+    }
   }
 }
 /*****************************************
