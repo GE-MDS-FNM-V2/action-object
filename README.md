@@ -4,7 +4,8 @@ This is the Action Object used within the GE FNM.
 
 [![Coverage Status](https://coveralls.io/repos/github/GE-MDS-FNM-V2/action-object/badge.svg?branch=master)](https://coveralls.io/github/GE-MDS-FNM-V2/action-object?branch=master)
 
-This library is used a common interface between all modules. It contains a standard format for transmitting data, as well as a standard error format.
+This library is a common interface between all modules. It contains a standard format for transmitting data, as well as a standard error format.
+If _any_ data is going to be transmitted between any module, or any consumer and CSM, use this object.
 
 ## I would like to use the library in my app
 
@@ -24,10 +25,9 @@ npm i @ge-fnm/action-object
 
 ### ActionObject Creation and Serialization
 
-Here is an example of how to use it in a browser
-
+Responding with a simple string
 ```js
-import { v1, ActionTypeV1, CommunicationMethodV1 } from './action-object'
+import { v1, ActionTypeV1, CommunicationMethodV1 } from '@ge-fnm/action-object'
 
 const obj = v1.create({
   version: 1,
@@ -46,6 +46,32 @@ const obj = v1.create({
   },
   uri: 'http://localhost:5000'
 })
+```
+
+Responding with an Error
+```js
+
+import { v1, ActionTypeV1, CommunicationMethodV1, GEErrors } from '@ge-fnm/action-object'
+const GEPAMError = GEErrors.GEPAMError
+const GEPAMErrorCodes = GEErrors.GEPAMErrorCodes
+throw 
+const obj = v1.create({
+  version: 1,
+  actionType: ActionTypeV1.GET,
+  commData: {
+    commMethod: CommunicationMethodV1.HTTP,
+    protocol: ProtocolV1.JSONRPC,
+    username: 'john',
+    password: 'adams'
+  },
+  modifyingValue: 'test',
+  path: ['hello', 'world'],
+  response: {
+    error: new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR) // note that if error exists, it MUST be a serialized GEError
+  },
+  uri: 'http://localhost:5000'
+})
+```
 
 const serialized = obj.serialize()
 const objAgain = v1.deserialize(serialized)
