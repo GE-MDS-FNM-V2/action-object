@@ -23,9 +23,10 @@ yarn add @ge-fnm/action-object
 npm i @ge-fnm/action-object
 ```
 
-### ActionObject Creation and Serialization
+### Examples
 
 Responding with a simple string
+
 ```js
 import { v1, ActionTypeV1, CommunicationMethodV1 } from '@ge-fnm/action-object'
 
@@ -42,19 +43,19 @@ const obj = v1.create({
   path: ['hello', 'world'],
   response: {
     data: 'hello world',
-    error: null // note that if error exists, it must be a serialized GEError
+    error: null // note that if error exists, it must be a GEError
   },
   uri: 'http://localhost:5000'
 })
 ```
 
 Responding with an Error
-```js
 
+```js
 import { v1, ActionTypeV1, CommunicationMethodV1, GEErrors } from '@ge-fnm/action-object'
 const GEPAMError = GEErrors.GEPAMError
 const GEPAMErrorCodes = GEErrors.GEPAMErrorCodes
-throw 
+
 const obj = v1.create({
   version: 1,
   actionType: ActionTypeV1.GET,
@@ -67,24 +68,28 @@ const obj = v1.create({
   modifyingValue: 'test',
   path: ['hello', 'world'],
   response: {
-    error: new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR) // note that if error exists, it MUST be a serialized GEError
+    error: new GEPAMError('test message', GEPAMErrorCodes.ADD_CLIENT_ERROR) // note that if error exists, it MUST be a GEError
   },
   uri: 'http://localhost:5000'
 })
 ```
 
-const serialized = obj.serialize()
+Serializing / Deserializing
+
+```js
+const obj = v1.create({...})
 const objAgain = v1.deserialize(serialized)
 // objAgain now has all the same properties as obj except with an added 'id' property
 
 // If you would like to initialize an ActionObject with a specific ID, you can do this:
 // NOTE - unless for testing purposes you really shouldn't be doing this
 const obj = v1.create(
-  {
-    ...information
-  },
-  'ThisIsAnOptionalID'
+{
+...information
+},
+'ThisIsAnOptionalID'
 )
+
 ```
 
 ### GEError creation and serialization
@@ -108,8 +113,7 @@ const GEActionObjectError = GEErrors.GEActionObjectError
 const GEActionObjectErrorCodes = GEErrors.GEActionObjectErrorCodes
 throw new GEActionObjectError('test message', GEActionObjectErrorCodes.DESERIALIZATION_ERROR)
 
-```
-
+````
 
 ## Debugging
 
